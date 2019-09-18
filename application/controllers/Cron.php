@@ -76,7 +76,7 @@ class Cron extends CB_Controller {
         echo $result;
     }
 
-    
+     
 
     public function import(){
 
@@ -108,9 +108,9 @@ class Cron extends CB_Controller {
 
             $ppl_result = $this->Cmall_item_model->get_one('','',array('cit_key' => element('pplID',$value)));
             if($ppl_result)             
-                $url = 'http://nate.newspopcon.com/postact/import_write/'.element('cit_id',$ppl_result);
+                $url = site_url('postact/import_write/'.element('cit_id',$ppl_result));
             else 
-                $url = 'http://nate.newspopcon.com/postact/import_write';
+                $url = site_url('/postact/import_write'); 
 
             
 
@@ -190,7 +190,7 @@ class Cron extends CB_Controller {
             echo $result;
             echo "<br>";
             
-            break;
+            
         }
 
 

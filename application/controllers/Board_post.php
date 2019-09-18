@@ -595,7 +595,7 @@ class Board_post extends CB_Controller
 
 			$extravars = element('extravars', $board);
 			$form = json_decode($extravars, true);
-			$extra_content = '';
+			$extra_content = array();
 			$k = 0;
 			if ($form && is_array($form)) {
 				foreach ($form as $key => $value) {

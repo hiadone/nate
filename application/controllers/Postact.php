@@ -3650,7 +3650,7 @@ class Postact extends CB_Controller
 					$uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
 					$uploadconfig['max_size'] = '5000';
 					$uploadconfig['encrypt_name'] = true;
-					$uploadconfig['max_width'] = 300;
+					$uploadconfig['max_width'] = 2000;
 					$this->upload->initialize($uploadconfig);
 
 					if ($this->upload->do_upload('cit_file_' . $k)) {

@@ -1086,7 +1086,7 @@ class Cmallitem extends CB_Controller
 		$date = new DateTime('-3 day');
 		
 		$url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
-		
+		echo $url;
 		$data = array();
 
 		$ch = curl_init();
@@ -1104,9 +1104,9 @@ class Cmallitem extends CB_Controller
 
 			$ppl_result = $this->Cmall_item_model->get_one('','',array('cit_key' => element('pplID',$value)));
 			if($ppl_result)			    
-			    $url = 'http://nate.newspopcon.com/postact/import_write/'.element('cit_id',$ppl_result);
+			    $url = site_url('postact/import_write/'.element('cit_id',$ppl_result));
 			else 
-				$url = 'http://nate.newspopcon.com/postact/import_write';
+				$url = site_url('/postact/import_write'); 
 
 			
 
@@ -1184,9 +1184,9 @@ class Cmallitem extends CB_Controller
 			$result = curl_exec($ch);
 			curl_close($ch);
 			echo $result;
-			echo "<br>";
 			
-			break;
+			
+			
 		}
 
 

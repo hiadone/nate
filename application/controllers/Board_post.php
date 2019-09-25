@@ -937,7 +937,10 @@ class Board_post extends CB_Controller
 				'meta_keywords' => $meta_keywords,
 				'meta_author' => $meta_author,
 				'page_name' => $page_name,
+				'page_url' => element('path',parse_url(board_url(element('brd_key', $board)))),
+
 			);
+
 			$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
 			$this->data = $view;
 			$this->layout = element('layout_skin_file', element('layout', $view));

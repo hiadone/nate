@@ -37,6 +37,7 @@ class Stat extends CB_Controller
     protected $helpers = array('form', 'array');
 
     function __construct()
+
     {
         parent::__construct();
 
@@ -55,20 +56,13 @@ class Stat extends CB_Controller
     /**
      * 목록을 가져오는 메소드입니다
      */
-    public function lists($brd_key)
+    public function lists($brd_key='b-a-1')
     {
 
         
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_stat_media_index';
         $this->load->event($eventname);
-
-        if (empty($brd_key)) {
-            show_404();
-        }
-
-        
-        $this->set_init($brd_key);
 
         $view = array();
         $view['view'] = array();
@@ -109,18 +103,19 @@ class Stat extends CB_Controller
         $layoutconfig = array(
             'path' => 'stat',
             'layout' => 'layout',
-            'skin' => 'lists.php',
+            'skin' => 'lists',
             'layout_dir' => $this->cbconfig->item('layout_main'),
             'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
             'use_sidebar' => $this->cbconfig->item('sidebar_main'),
             'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
-            'skin_dir' => 'bootstrap_'.$brd_key,
-            'mobile_skin_dir' => 'bootstrap_'.$brd_key,
+            'skin_dir' => 'bootstrap',
+            'mobile_skin_dir' => 'bootstrap',
             'page_title' => $page_title,
             'meta_description' => $meta_description,
             'meta_keywords' => $meta_keywords,
             'meta_author' => $meta_author,
             'page_name' => $page_name,
+            'page_url' => 'stat/lists',
         );
 
         $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
@@ -130,7 +125,7 @@ class Stat extends CB_Controller
     }
 
     
-    public function real_click_list($brd_key,$export = '')
+    public function view_log($brd_key,$export = '')
     {
         
         // 이벤트 라이브러리를 로딩합니다
@@ -141,7 +136,7 @@ class Stat extends CB_Controller
             show_404();
         }
         $mem_id = (int) $this->member->item('mem_id');
-        $this->set_init($brd_key);
+        
 
         $view = array();
         $view['view'] = array();
@@ -157,7 +152,7 @@ class Stat extends CB_Controller
          */
         
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
-        $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{ucfirst($this->link_log_model)}->primary_key;
+        $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Media_view_log_model->primary_key;
         $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
@@ -172,18 +167,20 @@ class Stat extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{ucfirst($this->link_log_model)}->allow_search_field = array('post.post_title', 'post.post_id'); // 검색이 가능한 필드
-        $this->{ucfirst($this->link_log_model)}->search_field_equal = array('post.post_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{ucfirst($this->link_log_model)}->allow_order_field = array($this->id_key.'lc_id'); // 정렬이 가능한 필드
+        $this->Media_view_log_model->allow_search_field = array('post.post_title', 'post.post_id'); // 검색이 가능한 필드
+        $this->Media_view_log_model->search_field_equal = array('post.post_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+        $this->Media_view_log_model->allow_order_field = array('mvl_id'); // 정렬이 가능한 필드
 
         $where = array();
 
         
 
-        $where_in='';
+        $where_in=array();
         if ($brdid = (int) $this->input->get('brd_id')) {
             $where['post.brd_id'] = $brdid;
         } else $where['post.brd_id'] =  $this->board->item_key('brd_id', $brd_key);
+
+        if($this->input->get('post_id')) $where['post_id'] = $this->input->get('post_id');
 
         if ($is_admin === false) {
             
@@ -209,12 +206,11 @@ class Stat extends CB_Controller
         }
         
         
-        if(!empty($this->input->get('multi_code',null))) $where['mlc_code'] = $this->input->get('multi_code',null);
+        if(!empty($this->input->get('multi_code',null))) $where['mvl_code'] = $this->input->get('multi_code',null);
 
 
 
-        $result = $this->{ucfirst($this->link_log_model)}
-            ->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword,'',$where_in);
+        $result = $this->Media_view_log_model->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
@@ -223,10 +219,10 @@ class Stat extends CB_Controller
                 $result['list'][$key]['post_url'] = post_url($brd_key, element('post_id', $val));
                 $result['list'][$key]['post_link'] = $this->Post_link_model->get_one(element('pln_id', $val));
                 $result['list'][$key]['display_datetime'] = display_datetime(
-                    element($this->id_key.'lc_datetime', $val)
+                    element('mvl_datetime', $val)
                 );
-                $result['list'][$key]['display_ip'] = element($this->id_key.'lc_ip', $val);
-                
+                $result['list'][$key]['display_ip'] = element('mvl_ip', $val);
+                $result['list'][$key]['referrer'] = element('mvl_referrer', $val);
 
                 $result['list'][$key]['member_group_name'] = '';
 
@@ -250,8 +246,8 @@ class Stat extends CB_Controller
 
                 }
 
-                if (element($this->id_key.'lc_useragent', $val)) {
-                    $userAgent = get_useragent_info(element($this->id_key.'lc_useragent', $val));
+                if (element('mvl_useragent', $val)) {
+                    $userAgent = get_useragent_info(element('mvl_useragent', $val));
                     $result['list'][$key]['browsername'] = $userAgent['browsername'];
                     $result['list'][$key]['browserversion'] = $userAgent['browserversion'];
                     $result['list'][$key]['os'] = $userAgent['os'];
@@ -269,7 +265,7 @@ class Stat extends CB_Controller
         /**
          * primary key 정보를 저장합니다
          */
-        $view['view']['primary_key'] = $this->{ucfirst($this->link_log_model)}->primary_key;
+        $view['view']['primary_key'] = $this->Media_view_log_model->primary_key;
 
         /**
          * 페이지네이션을 생성합니다
@@ -318,13 +314,14 @@ class Stat extends CB_Controller
                 'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
                 'use_sidebar' => $this->cbconfig->item('sidebar_main'),
                 'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
-                'skin_dir' => 'bootstrap_'.$brd_key,
-                'mobile_skin_dir' => 'bootstrap_'.$brd_key,
+                'skin_dir' => 'bootstrap',
+                'mobile_skin_dir' => 'bootstrap',
                 'page_title' => $page_title,
                 'meta_description' => $meta_description,
                 'meta_keywords' => $meta_keywords,
                 'meta_author' => $meta_author,
                 'page_name' => $page_name,
+                'page_url' => 'stat/lists',
             );
 
             $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
@@ -334,7 +331,7 @@ class Stat extends CB_Controller
         }
     }
 
-    public function real_download_list($brd_key,$export = '')
+    public function click_log($brd_key,$export = '')
     {
         
         // 이벤트 라이브러리를 로딩합니다
@@ -344,7 +341,7 @@ class Stat extends CB_Controller
         if (empty($brd_key)) {
             show_404();
         }
-        $this->set_init($brd_key);
+        
         $view = array();
         $view['view'] = array();
 
@@ -359,7 +356,7 @@ class Stat extends CB_Controller
          */
         
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
-        $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{ucfirst($this->click_log_model)}->primary_key;
+        $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Media_click_log_model->primary_key;
         $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
@@ -375,9 +372,9 @@ class Stat extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{ucfirst($this->click_log_model)}->allow_search_field = array('post.post_title', 'post.post_id','media_file_download_log.sfd_referrer'); // 검색이 가능한 필드
-        $this->{ucfirst($this->click_log_model)}->search_field_equal = array('post.post_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{ucfirst($this->click_log_model)}->allow_order_field = array($this->id_key.'fd_id'); // 정렬이 가능한 필드
+        $this->Media_click_log_model->allow_search_field = array('post.post_title', 'post.post_id','media_file_download_log.sfd_referrer'); // 검색이 가능한 필드
+        $this->Media_click_log_model->search_field_equal = array('post.post_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+        $this->Media_click_log_model->allow_order_field = array('mcl_id'); // 정렬이 가능한 필드
 
         $where = array();
         $where_in='';
@@ -410,11 +407,10 @@ class Stat extends CB_Controller
 
         }
 
-        if(!empty($this->input->get('multi_code',null))) $where['mfd_code'] = $this->input->get('multi_code',null);
+        if(!empty($this->input->get('multi_code',null))) $where['mcl_code'] = $this->input->get('multi_code',null);
 
 
-        $result = $this->{ucfirst($this->click_log_model)}
-            ->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword,'',$where_in);
+        $result = $this->Media_click_log_model->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword,'',$where_in);
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
@@ -422,11 +418,11 @@ class Stat extends CB_Controller
                 
                 $result['list'][$key]['post_url'] = post_url($this->board->item_id('brd_key', element('brd_id', $val)), element('post_id', $val));
                 $result['list'][$key]['display_datetime'] = display_datetime(
-                    element($this->id_key.'fd_datetime', $val)
+                    element('mcl_datetime', $val)
                 );
 
-                $result['list'][$key]['display_ip'] = element($this->id_key.'fd_ip', $val);
-
+                $result['list'][$key]['display_ip'] = element('mcl_ip', $val);
+                $result['list'][$key]['referrer'] = element('mcl_referrer', $val);
                 $result['list'][$key]['member_group_name'] = '';
 
                 $where = array(
@@ -449,8 +445,8 @@ class Stat extends CB_Controller
 
                 }
 
-                if (element($this->id_key.'fd_useragent', $val)) {
-                    $userAgent = get_useragent_info(element($this->id_key.'fd_useragent', $val));
+                if (element('mcl_useragent', $val)) {
+                    $userAgent = get_useragent_info(element('mcl_useragent', $val));
                     $result['list'][$key]['browsername'] = $userAgent['browsername'];
                     $result['list'][$key]['browserversion'] = $userAgent['browserversion'];
                     $result['list'][$key]['os'] = $userAgent['os'];
@@ -468,7 +464,7 @@ class Stat extends CB_Controller
         /**
          * primary key 정보를 저장합니다
          */
-        $view['view']['primary_key'] = $this->{ucfirst($this->link_log_model)}->primary_key;
+        $view['view']['primary_key'] = $this->Media_click_log_model->primary_key;
 
         /**
          * 페이지네이션을 생성합니다
@@ -517,13 +513,14 @@ class Stat extends CB_Controller
                 'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
                 'use_sidebar' => $this->cbconfig->item('sidebar_main'),
                 'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
-                'skin_dir' => 'bootstrap_'.$brd_key,
-                'mobile_skin_dir' => 'bootstrap_'.$brd_key,
+                'skin_dir' => 'bootstrap',
+                'mobile_skin_dir' => 'bootstrap',
                 'page_title' => $page_title,
                 'meta_description' => $meta_description,
                 'meta_keywords' => $meta_keywords,
                 'meta_author' => $meta_author,
                 'page_name' => $page_name,
+                'page_url' => 'stat/lists',
             );
 
             $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
@@ -546,7 +543,7 @@ class Stat extends CB_Controller
             show_404();
         }
 
-        $this->set_init($brd_key);
+        
         $view = array();
         $view['view'] = array();
 
@@ -584,8 +581,8 @@ class Stat extends CB_Controller
         $brd_id = $this->input->get('brd_id', null, $this->board->item_key('brd_id', $brd_key));
         
         
-        $this->{ucfirst($this->click_stat_model)}->allow_search_field = array($this->id_key.'ds_id', 'post.post_title'); // 검색이 가능한 필드
-        $this->{ucfirst($this->click_stat_model)}->search_field_equal = array($this->id_key.'ds_id', 'post.post_title'); // 검색중 like 가 
+        $this->Media_view_stat_model->allow_search_field = array('mcs_id', 'post.post_title'); // 검색이 가능한 필드
+        $this->Media_view_stat_model->search_field_equal = array('mcs_id', 'post.post_title'); // 검색중 like 가 
 
         
         
@@ -633,7 +630,7 @@ class Stat extends CB_Controller
        if(!empty($this->input->get('multi_code',null))) $multi_code = $this->input->get('multi_code',null);
 
        
-        $result = $this->{ucfirst($this->click_stat_model)}->get_link_click_count($datetype, $start_date, $end_date, $brd_id, $orderby, $skey_,$multi_code);
+        $result = $this->Media_view_stat_model->get_view_stat_count($datetype, $start_date, $end_date, $brd_id, $orderby, $skey_,$multi_code);
 
         
         
@@ -646,20 +643,7 @@ class Stat extends CB_Controller
         if ($result && is_array($result)) {
             foreach ($result as $key => $value) {
 
-                if($this->click_stat_model!=='mobusi_click_stat_model'){
-                    preg_match(
-                        "/^http[s]*:\/\/([\.\-\_0-9a-zA-Z]*)\//",
-                        element('day', $value),
-                        $match
-                    );
-
-                    $s = $match ? $match[1] : '-';
-                    $s = preg_replace(
-                        "/^(www\.|search\.|dirsearch\.|dir\.search\.|dir\.|kr\.search\.|myhome\.)(.*)/",
-                        "\\2",
-                        $s
-                    );
-                } else $s=element('day', $value);
+                $s=element('day', $value);
                 if ($s === '-'){
                     if($datetype==='domain') $s = '직접';
                     else $s = element('day', $value);
@@ -667,49 +651,37 @@ class Stat extends CB_Controller
 
                 
                 if ( ! isset($arr[$s])) {
-                    $arr[$s]['cnt'] = 0;
-                    $arr[$s]['hit_cnt'] = 0;
+                    $arr[$s]['mvs_cnt'] = 0;
+                    $arr[$s]['mcs_cnt'] = 0;
                 }
-                $arr[$s]['cnt'] += element('cnt', $value);
-                $arr[$s]['hit_cnt'] += element('hit_cnt', $value);
-                if ($arr[$s]['cnt'] > $max) {
-                    $max = $arr[$s]['cnt'];
+                $arr[$s]['mvs_cnt'] += element('mvs_cnt', $value);
+                // $arr[$s]['hit_cnt'] += element('mvs_cnt', $value);
+                if ($arr[$s]['mvs_cnt'] > $max) {
+                    $max = $arr[$s]['mvs_cnt'];
                 }
-                $sum_count += element('cnt', $value);
-                $hit_sum_count += element('hit_cnt', $value);
+                $sum_count += element('mvs_cnt', $value);
+                // $hit_sum_count += element('mvs_cnt', $value);
             }
         }
 
 
-        if($datetype!=='domain' || $this->link_stat_model==='mobusi_link_stat_model'|| $this->link_stat_model==='media_link_stat_model' ){
+        
             
-            $this->{ucfirst($this->link_stat_model)}->allow_search_field = array($this->id_key.'ds_id', 'post.post_title'); // 검색이 가능한 필드
-            $this->{ucfirst($this->link_stat_model)}->search_field_equal = array($this->id_key.'ds_id', 'post.post_title'); // 검색중 like 가 
+            $this->Media_click_stat_model->allow_search_field = array('mcs_id', 'post.post_title'); // 검색이 가능한 필드
+            $this->Media_click_stat_model->search_field_equal = array('mcs_id', 'post.post_title'); // 검색중 like 가 
 
             $skey = $this->input->get('post_id_', null, '');
             
 
-            $result = $this->{ucfirst($this->link_stat_model)}->get_link_click_count($datetype, $start_date, $end_date, $brd_id, $orderby, $skey_, $multi_code);
+            $result = $this->Media_click_stat_model->get_click_stat_count($datetype, $start_date, $end_date, $brd_id, $orderby, $skey_, $multi_code);
             
             
             
 
             if ($result && is_array($result)) {
                 foreach ($result as $key => $value) {
-                    if($this->click_stat_model!=='mobusi_click_stat_model'){
-                        preg_match(
-                            "/^http[s]*:\/\/([\.\-\_0-9a-zA-Z]*)\//",
-                            element('day', $value),
-                            $match
-                        );
 
-                        $s = $match ? $match[1] : '-';
-                        $s = preg_replace(
-                            "/^(www\.|search\.|dirsearch\.|dir\.search\.|dir\.|kr\.search\.|myhome\.)(.*)/",
-                            "\\2",
-                            $s
-                        );
-                    } else $s=element('day', $value); 
+                    $s=element('day', $value); 
                     if ($s === '-'){
                         if($datetype==='domain') $s = '직접';
                         else $s = element('day', $value);
@@ -718,18 +690,18 @@ class Stat extends CB_Controller
                     
                     if ( ! isset($arr[$s])) {
                         
-                        $arr[$s]['hit_cnt'] = 0;
+                        $arr[$s]['mcs_cnt'] = 0;
                     }
                     
-                    $arr[$s]['hit_cnt'] += element('hit_cnt', $value);
+                    $arr[$s]['mcs_cnt'] += element('mcs_cnt', $value);
                     // if ($arr[$s]['cnt'] > $max) {
                     //     $max = $arr[$s]['cnt'];
                     // }
                     
-                    $hit_sum_count += element('hit_cnt', $value);
+                    $hit_sum_count += element('mcs_cnt', $value);
                 }
             }
-        }
+        
         $result = array();
         $i = 0;
         $save_count = -1;
@@ -737,16 +709,16 @@ class Stat extends CB_Controller
 
         if (count($arr)) {
             foreach ($arr as $key => $value) {
-                if(!empty($arr[$key]['cnt'])) $count = (int) $arr[$key]['cnt'];
+                if(!empty($arr[$key]['mvs_cnt'])) $count = (int) $arr[$key]['mvs_cnt'];
                 else $count = 0;
 
-                if(!empty($arr[$key]['hit_cnt'])) $hit_count = (int) $arr[$key]['hit_cnt'];
+                if(!empty($arr[$key]['mcs_cnt'])) $hit_count = (int) $arr[$key]['mcs_cnt'];
                 else $hit_count = 0;
                 
                 $result[$key]['count'] = $count;
                 $result[$key]['hit_count'] = $hit_count;
 
-                if( ($brd_key==='selfcert_ad' || $brd_key === 'linkmine' || $brd_key==='tenping' || $brd_key==='viashare') && $datetype!=='domain'){
+                if($datetype!=='domain'){
                     $i++;
                     if ($save_count !== $hit_count) {
                         $no = $i;
@@ -864,7 +836,7 @@ class Stat extends CB_Controller
             
             header('Content-type: application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename=캠페인_' . cdate('Y_m_d') . '.xls');
-            echo $this->load->view('/stat/bootstrap_'.$brd_key.'/graph_excel', $view, true);
+            echo $this->load->view('/stat/bootstrap/graph_excel', $view, true);
 
         } else {
             /**
@@ -885,13 +857,14 @@ class Stat extends CB_Controller
                 'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
                 'use_sidebar' => $this->cbconfig->item('sidebar_main'),
                 'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
-                'skin_dir' => 'bootstrap_'.$brd_key,
-                'mobile_skin_dir' => 'bootstrap_'.$brd_key,
+                'skin_dir' => 'bootstrap',
+                'mobile_skin_dir' => 'bootstrap',
                 'page_title' => $page_title,
                 'meta_description' => $meta_description,
                 'meta_keywords' => $meta_keywords,
                 'meta_author' => $meta_author,
                 'page_name' => $page_name,
+                'page_url' => 'stat/lists',
             );
             $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
             $this->data = $view;
@@ -960,7 +933,7 @@ class Stat extends CB_Controller
             show_404();
         }
 
-        $this->set_init($brd_key);
+        
 
         $view = array();
         $view['view'] = array();
@@ -1006,28 +979,28 @@ class Stat extends CB_Controller
 
             if ($this->input->post('criterion') && ($this->input->post('day') || (int)$this->input->post('day') === 0)) {
                 $deletewhere = array(
-                    $this->id_key.'ds_datetime <=' => $this->input->post('criterion'),
+                    'mvs_datetime <=' => $this->input->post('criterion'),
                 );
 
-                $this->{ucfirst($this->click_stat_model)}->delete_where($deletewhere);
+                $this->Media_view_stat_model->delete_where($deletewhere);
 
                 $deletewhere = array(
-                    $this->id_key.'cs_datetime <=' => $this->input->post('criterion'),
+                    'mcs_datetime <=' => $this->input->post('criterion'),
                 );
 
-                $this->{ucfirst($this->link_stat_model)}->delete_where($deletewhere);
+                $this->Media_click_stat_model->delete_where($deletewhere);
                 $view['view']['alert_message'] = '총 ' . number_format($this->input->post('log_count')) . ' 건의 ' . $this->input->post('day') . '일 이상된 로그가 모두 삭제되었습니다';
             } else {
                 $criterion = cdate('Y-m-d H:i:s', ctimestamp() - $this->input->post('day') * 24 * 60 * 60);
                 $countwhere = array(
-                    $this->id_key.'ds_datetime <=' => $criterion,
+                    'mvs_datetime <=' => $criterion,
                 );
-                $log_count = $this->{ucfirst($this->click_stat_model)}->count_by($countwhere);
+                $log_count = $this->Media_view_stat_model->count_by($countwhere);
 
                 $countwhere = array(
-                    $this->id_key.'cs_datetime <=' => $criterion,
+                    'mcs_datetime <=' => $criterion,
                 );
-                $log_count += $this->{ucfirst($this->link_stat_model)}->count_by($countwhere);
+                $log_count += $this->Media_click_stat_model->count_by($countwhere);
 
                 $view['view']['criterion'] = $criterion;
                 $view['view']['day'] = $this->input->post('day');
@@ -1061,13 +1034,14 @@ class Stat extends CB_Controller
             'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
             'use_sidebar' => $this->cbconfig->item('sidebar_main'),
             'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
-            'skin_dir' => 'bootstrap_'.$brd_key,
-            'mobile_skin_dir' => 'bootstrap_'.$brd_key,
+            'skin_dir' => 'bootstrap',
+            'mobile_skin_dir' => 'bootstrap',
             'page_title' => $page_title,
             'meta_description' => $meta_description,
             'meta_keywords' => $meta_keywords,
             'meta_author' => $meta_author,
             'page_name' => $page_name,
+            'page_url' => 'stat/lists',
         );
         $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
         $this->data = $view;
@@ -1112,7 +1086,7 @@ class Stat extends CB_Controller
             $alertmessage,
             $check
         );
-        $this->accesslevel->selfcertcheck('list', element('access_list_selfcert', $board));
+        
 
         if (element('use_personal', $board) && $this->member->is_member() === false) {
             alert('이 게시판은 1:1 게시판입니다. 비회원은 접근할 수 없습니다');

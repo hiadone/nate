@@ -11,11 +11,11 @@
         <?php  echo '<h4 class="highlight mb20">미디어 통계</h4>'; ?>
             <div class="box-table-header">
                 <ul class="nav nav-pills">
-                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir. '/lists/tenping'); ?>">캠페인 목록</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping'); ?>">실시간 리스트</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/tenping'); ?>">기간별 그래프</a></li>
+                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir. '/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1'); ?>">실시간 리스트</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1'); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/tenping'); ?>">로그삭제</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/b-a-1'); ?>">로그삭제</a></li>
                     <?php } ?>
                 </ul>
                 <?php
@@ -46,9 +46,7 @@
                     <thead>
                         <tr>
                             <th><a href="<?php echo element('pl_id', element('sort', $view)); ?>">번호</a></th>
-                            <th>제목</th>
-                            <th>그룹명</th>
-                            <th>ICON</th>
+                            <th>제목</th>                            
                             <th>URL</th>
                            <!--  <th>캠페인클릭</th> -->
                             <!-- <th>IP</th> -->
@@ -62,23 +60,22 @@
                     <?php
                     if (element('list', element('data', element('list', $view)))) {
                         foreach (element('list', element('data', element('list', $view))) as $result) {
+                            $multi_code =  explode(',', element('campaign_multi', element('extravars',$result)));
                     ?>
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php echo html_escape(element('post_title', $result)); ?><a href="<?php echo goto_url(element('post_url', $result)); ?>" target="_blank"><span class="fa fa-external-link"></span></a></td>
-                            <td><?php echo html_escape(element('member_group_name', $result)); ?></td>
-                            <td><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('title', $result)); ?>" title="<?php echo html_escape(element('title', $result)); ?>" class="thumbnail img-responsive px50"  /></td>
+                            <!-- <td><?php echo html_escape(element('member_group_name', $result)); ?></td>
+                            <td><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('title', $result)); ?>" title="<?php echo html_escape(element('title', $result)); ?>" class="thumbnail img-responsive px50"  /></td> -->
                             <td><?php 
-                                if(element('pln_url',$result))
-                                    foreach(element('pln_url',$result) as $key=> $value){
-                                        echo '<div><i class="fa fa-link"></i><a href="'.element('pln_url',$value).'" target="_blank">'.element('pln_url',$value).'</a></div>';
-                                    }
+                                echo '<div><i class="fa fa-link"></i><a href="'.site_url('postact/media_view/'.element('post_id', $result)).'" target="_blank">'.site_url('postact/media_view/'.element('post_id', $result)).'</a></div>';
+                                    
                                  ?>
                             </td>
                             
                             <td><?php echo element('campaign_status', element('extravars', $result)); ?></td>
                             <td><?php echo element('display_datetime', $result); ?></td>
-                            <td><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping');?>?post_id_[]=<?php echo element('post_id', $result)?>" class="btn btn-success btn-xs">통계보기</a></td>
+                            <td><a href="<?php echo site_url($this->pagedir . '/real_click_list/b-a-1');?>?post_id_[]=<?php echo element('post_id', $result)?>" class="btn btn-success btn-xs">통계보기</a></td>
                         </tr>
                     <?php
                         }

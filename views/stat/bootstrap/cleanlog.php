@@ -4,11 +4,11 @@
     <?php  echo '<h4 class="highlight mb20">미디어 통계</h4>'; ?>
         <div class="box-table-header">
             <ul class="nav nav-pills">
-                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/tenping'); ?>">캠페인 목록</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping'); ?>">실시간 리스트</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/tenping'); ?>">기간별 그래프</a></li>
+                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1'); ?>">실시간 리스트</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1'); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
-                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/cleanlog/tenping'); ?>">로그삭제</a></li>
+                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/cleanlog/b-a-1'); ?>">로그삭제</a></li>
                     <?php } ?>
                 </ul>
         </div>

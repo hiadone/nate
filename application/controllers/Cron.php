@@ -62,13 +62,13 @@ class Cron extends CB_Controller {
         $criterion = cdate('Y-m-d 00:00:00', strtotime('-3 day'));
 
         $deletewhere = array(
-                    'mlc_datetime <=' => $criterion,
+                    'mvl_datetime <=' => $criterion,
                 );
 
         $result = $this->Media_view_log_model->delete_where($deletewhere);
 
         $deletewhere = array(
-                    'mfd_datetime <=' => $criterion,
+                    'mcl_datetime <=' => $criterion,
                 );
 
         $result = $this->Media_click_log_model->delete_where($deletewhere);
@@ -90,7 +90,7 @@ class Cron extends CB_Controller {
         $date = new DateTime('-3 day');
         
         $url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
-        
+        echo $url."<br>";
         $data = array();
 
         $ch = curl_init();

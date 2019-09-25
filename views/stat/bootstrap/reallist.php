@@ -8,21 +8,21 @@
 
         ?>
         <input type="hidden" name="findex" value="<?php echo html_escape($this->input->get('findex')); ?>" />
-        <?php  echo '<h4 class="highlight mb20">미디어 통계</h4>'; ?>
+        <?php  echo '<h4 class="highlight mb20">미디어 log</h4>'; ?>
             <div class="box-table-header">
                 <ul class="nav nav-pills">
-                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir. '/lists/tenping'); ?>">캠페인 목록</a></li>
-                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping?'.$this->param->output()); ?>">실시간 리스트</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/tenping?'.$this->param->output()); ?>">기간별 그래프</a></li>
+                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir. '/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1?'.$this->param->output()); ?>">실시간 리스트</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1?'.$this->param->output()); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/tenping'); ?>">로그삭제</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/b-a-1?'.$this->param->output()); ?>">로그삭제</a></li>
                     <?php } ?>
                 </ul>
                 <?php
                 ob_start();
                 ?>
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+                        <a href="<?php echo element('listall_url', $view).'?'.$this->param->replace('post_id_[]') ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
                         <!-- <button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button> -->
                     </div>
                 <?php
@@ -33,8 +33,8 @@
 
                 <div class="pull-right mr10">
                     <ul class="nav nav-tabs clearfix">
-                        <li role="presentation" <?php if ($this->uri->segment(2) === 'real_click_list') { ?>class="active" <?php } ?>><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping?'.$this->param->output()); ?>" >미디어 클릭 통계</a></li>
-                        <li role="presentation" <?php if ($this->uri->segment(2) === 'real_download_list') { ?>class="active" <?php } ?>><a href="<?php echo site_url($this->pagedir . '/real_download_list/tenping?'.$this->param->output()); ?>">상담신청 클릭 통계</a></li>
+                        <li role="presentation" <?php if ($this->uri->segment(2) === 'view_log') { ?>class="active" <?php } ?>><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1?'.$this->param->output()); ?>" >미디어 view log</a></li>
+                        <li role="presentation" <?php if ($this->uri->segment(2) === 'click_log') { ?>class="active" <?php } ?>><a href="<?php echo site_url($this->pagedir . '/click_log/b-a-1?'.$this->param->output()); ?>">미디어 click log</a></li>
 
                     </ul>
                 </div>
@@ -49,19 +49,40 @@
                     </div>
                 <?php } ?>
             </div>
+
+            <?php
+            if(element('campaign_multi', $view)){
+                $multi_code = explode(',',element('campaign_multi', $view));
+            
+            ?>
+            <div class="col-md-12 mb20">
+                <ul class="nav nav-tabs ">
+                    <li role="presentation" <?php if ( ! $this->input->get('multi_code')) { ?>class="active" <?php } ?>><a href="<?php echo current_url().'?'.$this->param->replace('multi_code');?>&multi_code=">매체 전체</a></li>
+                    <?php
+                    
+                    if ($multi_code) {
+                        foreach ($multi_code as $mkey => $mval) {
+                            if(empty($mval)) continue;
+                    ?>
+                        <li role="presentation" <?php if ($this->input->get('multi_code') === $mval) { ?>class="active" <?php } ?>><a href="<?php echo current_url().'?'.$this->param->replace('multi_code').'&multi_code='.$mval; ?>"><?php echo html_escape($mval); ?></a></li>
+                    <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+            <?php } ?>
             <div class="row">전체 : <?php echo element('total_rows', element('data', $view), 0); ?>건</div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped table-bordered">
                     <thead>
                         <tr>
                             <th><a href="<?php echo element('pl_id', element('sort', $view)); ?>">번호</a></th>
-                            <th>제목</th>
-                            <th>그룹명</th>
+                            <th>제목</th>                            
                             <th>일시</th>
-                            <?php if ($this->uri->segment(2) === 'real_download_list') { ?><th>유입 URL</th> <?php } ?>
                             <th>IP</th>
                             <th>OS</th>
-                            
+                            <th>referrer</th>
                             <!-- <th><input type="checkbox" name="chkall" id="chkall" /></th> -->
                         </tr>
                     </thead>
@@ -69,19 +90,18 @@
                     <?php
                     if (element('list', element('data', $view))) {
                         foreach (element('list', element('data', $view)) as $result) {
+
                     ?>
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php echo html_escape(element('post_title', $result)); ?><a href="<?php echo goto_url(element('post_url', $result)); ?>" target="_blank"><span class="fa fa-external-link"></span></a></td>
-                            <td><?php echo html_escape(element('member_group_name', $result)); ?></td>
+                            
                             <td><?php echo display_datetime(element('display_datetime', $result), 'full'); ?></td>
                             <!-- <td><?php echo element('pl_hit', $result) ? element('pl_hit', $result) : ''; ?></td> -->
-                            <?php if ($this->uri->segment(2) === 'real_download_list') { ?>
-                                <td><i class="fa fa-link"></i><a href="<?php echo goto_url(prep_url(urldecode(element('sfd_referrer', $result)))); ?>" target="_blank"><?php echo prep_url(urldecode(element('sfd_referrer', $result))); ?></a></td>
-                            <?php } ?>
+                            
                             <td><?php echo element('display_ip', $result); ?></td>
                             <td><?php echo element('os', $result); ?></td>
-                            
+                            <td><?php echo element('referrer', $result); ?></td>
                             <!-- <td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td> -->
                         </tr>
                     <?php
@@ -98,6 +118,9 @@
                     </tbody>
                 </table>
             </div>
+
+
+            
             <div class="box-info">
                 <?php echo element('paging', $view); ?>
                 <div class="pull-left ml20"><?php echo admin_listnum_selectbox();?></div>

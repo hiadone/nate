@@ -9,14 +9,38 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
     <?php  echo '<h4 class="highlight mb20">미디어 통계</h4>'; ?>
         <div class="box-table-header">
             <ul class="nav nav-pills">
-                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/tenping'); ?>">캠페인 목록</a></li>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/real_click_list/tenping?'.$this->param->output()); ?>">실시간 리스트</a></li>
-                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/graph/tenping?'.$this->param->output()); ?>">기간별 그래프</a></li>
+                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1?'.$this->param->output()); ?>">실시간 리스트</a></li>
+                    <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1?'.$this->param->output()); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
-                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/tenping'); ?>">로그삭제</a></li>
+                    <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/cleanlog/b-a-1?'.$this->param->output()); ?>">로그삭제</a></li>
                     <?php } ?>
                 </ul>
         </div>
+
+        <?php
+            if(element('campaign_multi', $view)){
+                $multi_code = explode(',',element('campaign_multi', $view));
+            
+            ?>
+            <div class="col-md-12 mb20">
+                <ul class="nav nav-tabs ">
+                    <li role="presentation" <?php if ( ! $this->input->get('multi_code')) { ?>class="active" <?php } ?>><a href="<?php echo current_url().'?'.$this->param->replace('multi_code');?>&multi_code=">매체 전체</a></li>
+                    <?php
+                    
+                    if ($multi_code) {
+                        foreach ($multi_code as $mkey => $mval) {
+                            if(empty($mval)) continue;
+                    ?>
+                        <li role="presentation" <?php if ($this->input->get('multi_code') === $mval) { ?>class="active" <?php } ?>><a href="<?php echo current_url().'?'.$this->param->replace('multi_code').'&multi_code='.$mval; ?>"><?php echo html_escape($mval); ?></a></li>
+                    <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+            <?php } ?>
+            
         <div class="box-table-header">
             <form class="form-inline" name="flist" action="<?php echo current_url(); ?>" method="get" >
                 <input type="hidden" name="datetype" value="<?php echo html_escape($this->input->get('datetype')); ?>" />

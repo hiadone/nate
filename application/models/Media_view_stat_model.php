@@ -68,7 +68,7 @@ class Media_view_stat_model extends CB_Model
     }
 
 
-    public function get_view_click_count($type = 'd', $start_date = '', $end_date = '', $brd_id = 0, $orderby = 'asc', $skey = '', $multi_code = '')
+    public function get_view_stat_count($type = 'd', $start_date = '', $end_date = '', $brd_id = 0, $orderby = 'asc', $skey = '', $multi_code = '')
     {
         if (empty($start_date) OR empty($end_date)) {
             return false;
@@ -76,13 +76,13 @@ class Media_view_stat_model extends CB_Model
         $left = ($type === 'y') ? 4 : ($type === 'm' ? 7 : 10);
         if (strtolower($orderby) !== 'desc') $orderby = 'asc';
         if($type==='domain'){
-            $this->db->select('SUM(mvs_hit) as hit_cnt, mvs_referrer as day ', false);
+            $this->db->select('SUM(mvs_cnt) as mvs_cnt, mvs_referrer as day ', false);
         } else if($type==='week'){
-            $this->db->select('SUM(mvs_hit) as hit_cnt, WEEKDAY(mvs_datetime) as day ', false);
+            $this->db->select('SUM(mvs_cnt) as mvs_cnt, WEEKDAY(mvs_datetime) as day ', false);
         } elseif($type==='h'){
-            $this->db->select('SUM(mvs_hit) as hit_cnt, mid(mvs_datetime,12,2) as day ', false);
+            $this->db->select('SUM(mvs_cnt) as mvs_cnt, mid(mvs_datetime,12,2) as day ', false);
         } else {
-            $this->db->select('SUM(mvs_hit) as hit_cnt, left(mvs_datetime, ' . $left . ') as day ', false);
+            $this->db->select('SUM(mvs_cnt) as mvs_cnt, left(mvs_datetime, ' . $left . ') as day ', false);
         }
         
         
@@ -111,7 +111,7 @@ class Media_view_stat_model extends CB_Model
         $this->db->join('post', 'media_view_stat.post_id = post.post_id', 'inner');
 
         $this->db->group_by('day');
-        if($type==='domain') $this->db->order_by('hit_cnt', $orderby);
+        if($type==='domain') $this->db->order_by('mvs_cnt', $orderby);
 
         $qry = $this->db->get($this->_table);
         $result = $qry->result_array();
@@ -124,12 +124,12 @@ class Media_view_stat_model extends CB_Model
     public function migration()
     {   
         
-        // $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_hit from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_shortcut_file_download_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A LEFT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_hit, left(mlc_datetime, 13) as sc_datetime from cb_shortcut_view_click_log group by post_id,left(mlc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
+        // $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_cnt from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_shortcut_file_download_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A LEFT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_cnt, left(mlc_datetime, 13) as sc_datetime from cb_shortcut_view_click_log group by post_id,left(mlc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
         //     UNION
-        //     SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_hit from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_shortcut_file_download_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A RIGHT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_hit, left(mlc_datetime, 13) as sc_datetime from cb_shortcut_view_click_log group by post_id,left(mlc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
+        //     SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_cnt from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_shortcut_file_download_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A RIGHT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_cnt, left(mlc_datetime, 13) as sc_datetime from cb_shortcut_view_click_log group by post_id,left(mlc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
         //     ');
 
-        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mvs_datetime,A.mvs_referrer,A.mvs_hit,A.mvs_code from (SELECT post_id,brd_id,count(*) as mvs_hit, left(mlc_datetime, 13) as mvs_datetime,mlc_referrer as mvs_referrer,mlc_code as mvs_code from cb_media_view_log group by post_id,left(mlc_datetime, 13),mlc_referrer,mlc_code) A ');
+        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mvs_datetime,A.mvs_referrer,A.mvs_cnt,A.mvs_code from (SELECT post_id,brd_id,count(*) as mvs_cnt, left(mvl_datetime, 13) as mvs_datetime,mvl_referrer as mvs_referrer,mvl_code as mvs_code from cb_media_view_log group by post_id,left(mvl_datetime, 13),mvl_referrer,mvl_code) A ');
 
         $result = $qry->result_array();
         

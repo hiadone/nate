@@ -120,12 +120,14 @@ var cookie_prefix = "<?php echo config_item('cookie_prefix'); ?>";
 			});
 			//]]>
 			</script>
+			<div>
 			<ul class="nav-top">
 				<li>
 					<a href="<?php echo site_url(); ?>" target="_blank">홈페이지로 이동</a>
 				</li>
 				<li><a href="<?php echo site_url('login/logout'); ?>"><i class="fa fa-sign-out"></i> Log out</a></li>
 			</ul>
+			</div>
 		</div>
 		<!-- end header -->
 		<div class="contents">

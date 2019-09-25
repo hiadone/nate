@@ -31,9 +31,9 @@ class Media_view_log_model extends CB_Model
     public function get_admin_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
     {
         $select = 'media_view_log.*, post.mem_id as post_mem_id, post.post_userid, post.post_nickname,
-            post.brd_id, post.post_datetime, post.post_hit, post.post_secret, post.post_title, post_view.*';
-        $join[] = array('table' => 'post_view', 'on' => 'media_view_log.pln_id = post_view.pln_id', 'type' => 'inner');
-        $join[] = array('table' => 'post', 'on' => 'post_view.post_id = post.post_id', 'type' => 'inner');
+            post.brd_id, post.post_datetime, post.post_hit, post.post_secret, post.post_title, post_link.*';
+        $join[] = array('table' => 'post_link', 'on' => 'media_view_log.pln_id = post_link.pln_id', 'type' => 'inner');
+        $join[] = array('table' => 'post', 'on' => 'post_link.post_id = post.post_id', 'type' => 'inner');
         $result = $this->_get_list_common($select, $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
 
         return $result;
@@ -45,9 +45,8 @@ class Media_view_log_model extends CB_Model
         if(!empty($where_in)) $where_in_['media_view_log.'.key($where_in)]=$where_in[key($where_in)];
         else $where_in_='';
         $select = 'media_view_log.*, post.mem_id as post_mem_id, post.post_userid, post.post_nickname,
-            post.brd_id, post.post_datetime, post.post_hit, post.post_secret, post.post_title, post_view.*';
-        $join[] = array('table' => 'post_view', 'on' => 'media_view_log.pln_id = post_view.pln_id', 'type' => 'inner');
-        $join[] = array('table' => 'post', 'on' => 'post_view.post_id = post.post_id', 'type' => 'inner');
+            post.brd_id, post.post_datetime, post.post_hit, post.post_secret, post.post_title';        
+        $join[] = array('table' => 'post', 'on' => 'media_view_log.post_id = post.post_id', 'type' => 'inner');
         $result = $this->_get_list_common($select, $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop,$where_in_);
 
         return $result;

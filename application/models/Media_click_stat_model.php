@@ -76,13 +76,13 @@ class Media_click_stat_model extends CB_Model
         $left = ($type === 'y') ? 4 : ($type === 'm' ? 7 : 10);
         if (strtolower($orderby) !== 'desc') $orderby = 'asc';
         if($type==='domain'){
-            $this->db->select('SUM(mcs_cnt) as mcs_cnt, mcs_referrer as day ', false);
+            $this->db->select('SUM(mcs_cnt) as mcs_cnt,pln_id, mcs_referrer as day ', false);
         } elseif($type==='week'){
-            $this->db->select('SUM(mcs_cnt) as mcs_cnt, WEEKDAY(mcs_datetime) as day ', false);
+            $this->db->select('SUM(mcs_cnt) as mcs_cnt,pln_id, WEEKDAY(mcs_datetime) as day ', false);
         } elseif($type==='h'){
-            $this->db->select('SUM(mcs_cnt) as mcs_cnt, mid(mcs_datetime,12,2) as day ', false);
+            $this->db->select('SUM(mcs_cnt) as mcs_cnt,pln_id, mid(mcs_datetime,12,2) as day ', false);
         } else {
-            $this->db->select('SUM(mcs_cnt) as mcs_cnt, left(mcs_datetime, ' . $left . ') as day ', false);
+            $this->db->select('SUM(mcs_cnt) as mcs_cnt,pln_id, left(mcs_datetime, ' . $left . ') as day ', false);
         }
         
         
@@ -110,7 +110,7 @@ class Media_click_stat_model extends CB_Model
         
         $this->db->join('post', 'media_click_stat.post_id = post.post_id', 'inner');
 
-        $this->db->group_by('day');
+        $this->db->group_by('day,pln_id');
         if($type==='domain') $this->db->order_by('mcs_cnt', $orderby);
 
         $qry = $this->db->get($this->_table);
@@ -127,7 +127,7 @@ class Media_click_stat_model extends CB_Model
         //     SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_hit from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_media_click_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A RIGHT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_hit, left(slc_datetime, 13) as sc_datetime from cb_media_link_click_log group by post_id,left(slc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
         //     ');
 
-        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mcs_datetime,A.mcs_referrer,A.mcs_cnt,A.mcs_code from (SELECT post_id,brd_id,count(*) as mcs_cnt, left(mcl_datetime, 13) as mcs_datetime,mcl_referrer as mcs_referrer , mcl_code as mcs_code from cb_media_click_log group by post_id,left(mcl_datetime, 13),mcl_referrer,mcl_code) A ');
+        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mcs_datetime,A.pln_id,A.mcs_cnt,A.mcs_code from (SELECT post_id,brd_id,count(*) as mcs_cnt, left(mcl_datetime, 13) as mcs_datetime,pln_id, mcl_code as mcs_code from cb_media_click_log group by post_id,left(mcl_datetime, 13),pln_id,mcl_code) A ');
 
         $result = $qry->result_array(); 
         

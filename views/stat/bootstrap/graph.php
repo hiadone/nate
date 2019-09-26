@@ -176,14 +176,14 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                             ?>
                         </td>
                         
-                        <td><?php echo number_format(element('hit_count', $result, 0)); ?></td>
                         <td><?php echo number_format(element('count', $result, 0)); ?></td>
-                        <td><?php if(!empty(element('hit_count', $result, 0))) echo round((element('count', $result, 0)/element('hit_count', $result, 0)*100),2); ?>%</td>
+                        <td><?php echo number_format(element('hit_count', $result, 0)); ?></td>
+                        <td><?php if(!empty(element('count', $result, 0))) echo round((element('hit_count', $result, 0)/element('count', $result, 0)*100),2); ?>%</td>
                         <td><?php echo element('s_rate', $result, 0); ?>%</td>
                         <td>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?php echo element('s_rate', $result, 0); ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo element('s_rate', $result, 0); ?>%">
-                                    <span class="sr-only"><?php echo element('s_rate', $result, 0); ?>%</span>
+                                    <span class=""><?php echo element('s_rate', $result, 0); ?>%</span>
                                 </div>
                             </div>
                         </td>
@@ -199,10 +199,10 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                     <tfoot>
                         <tr class="warning">
                             <td>전체</td>
-                            <td><?php echo number_format(element('hit_sum_count', $view, 0)); ?></td>
                             <td><?php echo number_format(element('sum_count', $view, 0)); ?></td>
+                            <td><?php echo number_format(element('hit_sum_count', $view, 0)); ?></td>
                             
-                            <td><?php if(!empty(element('hit_sum_count', $view, 0))) echo round((element('sum_count', $view, 0)/element('hit_sum_count', $view, 0)*100),2); ?>%</td>
+                            <td><?php if(!empty(element('sum_count', $view, 0))) echo round((element('hit_sum_count', $view, 0)/element('sum_count', $view, 0)*100),2); ?>%</td>
                             <td></td>
                         </tr>
                     </tfoot>

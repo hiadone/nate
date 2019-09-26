@@ -210,7 +210,7 @@ class Stat extends CB_Controller
 
 
 
-        $result = $this->Media_view_log_model->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
+        $result = $this->Media_view_log_model->get_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword,'',$where_in);
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
@@ -271,7 +271,7 @@ class Stat extends CB_Controller
          * 페이지네이션을 생성합니다
          */
 
-        $config['base_url'] = site_url($this->pagedir).'/real_click_list/'.$brd_key . '?' . $this->param->replace('page');
+        $config['base_url'] = site_url($this->pagedir).'/view_log/'.$brd_key . '?' . $this->param->replace('page');
         $config['total_rows'] = $result['total_rows'];
         $config['per_page'] = $per_page;
         $this->pagination->initialize($config);
@@ -284,7 +284,7 @@ class Stat extends CB_Controller
         $search_option = array('post.post_title' => '제목');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
-        $view['view']['listall_url'] = site_url($this->pagedir.'/real_click_list/'.$brd_key);
+        $view['view']['listall_url'] = site_url($this->pagedir.'/view_log/'.$brd_key);
         $view['view']['list_delete_url'] = site_url($this->pagedir . '/listdelete/?' . $this->param->output());
 
         // 이벤트가 존재하면 실행합니다
@@ -372,12 +372,12 @@ class Stat extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->Media_click_log_model->allow_search_field = array('post.post_title', 'post.post_id','media_file_download_log.sfd_referrer'); // 검색이 가능한 필드
+        $this->Media_click_log_model->allow_search_field = array('post.post_title', 'post.post_id','media_file_download_log.sfd_referrer','cmall_item.cit_name'); // 검색이 가능한 필드
         $this->Media_click_log_model->search_field_equal = array('post.post_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
         $this->Media_click_log_model->allow_order_field = array('mcl_id'); // 정렬이 가능한 필드
 
         $where = array();
-        $where_in='';
+        $where_in=array();
 
 
         if ($brdid = (int) $this->input->get('brd_id')) {
@@ -393,8 +393,7 @@ class Stat extends CB_Controller
         
         
         if(!empty($this->input->get('post_id_', null, 0))) {
-            $where_in['post_id'] = $this->input->get('post_id_');
-
+            $where_in['post_id'] = $this->input->get('post_id_');            
             if(!empty($where_in['post_id'][0])){
                 $post['extravars'] = $this->Post_extra_vars_model->get_all_meta($where_in['post_id'][0]);
 
@@ -470,7 +469,7 @@ class Stat extends CB_Controller
          * 페이지네이션을 생성합니다
          */
 
-        $config['base_url'] = site_url($this->pagedir).'/real_download_list/'.$brd_key . '?' . $this->param->replace('page');
+        $config['base_url'] = site_url($this->pagedir).'/click_log/'.$brd_key . '?' . $this->param->replace('page');
         $config['total_rows'] = $result['total_rows'];
         $config['per_page'] = $per_page;
         $this->pagination->initialize($config);
@@ -480,10 +479,10 @@ class Stat extends CB_Controller
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
-        $search_option = array('post.post_title' => '제목');
+        $search_option = array('post.post_title' => '제목' ,'cmall_item.cit_name' => '상품명');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
-        $view['view']['listall_url'] = site_url($this->pagedir.'/real_download_list/'.$brd_key);
+        $view['view']['listall_url'] = site_url($this->pagedir.'/click_log/'.$brd_key);
         $view['view']['list_delete_url'] = site_url($this->pagedir . '/listdelete/?' . $this->param->output());
 
         // 이벤트가 존재하면 실행합니다

@@ -75,7 +75,7 @@
                             
                             <td><?php echo element('campaign_status', element('extravars', $result)); ?></td>
                             <td><?php echo element('display_datetime', $result); ?></td>
-                            <td><a href="<?php echo site_url($this->pagedir . '/real_click_list/b-a-1');?>?post_id_[]=<?php echo element('post_id', $result)?>" class="btn btn-success btn-xs">통계보기</a></td>
+                            <td><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1');?>?post_id_[]=<?php echo element('post_id', $result)?>" class="btn btn-success btn-xs">통계보기</a></td>
                         </tr>
                     <?php
                         }

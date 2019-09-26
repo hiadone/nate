@@ -115,7 +115,7 @@ class CB_Model extends CI_Model
 	}
 
 
-	public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
+	public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR', $where_in = '')
 	{
 		if (empty($findex) OR ! in_array($findex, $this->allow_order_field)) {
 			$findex = $this->primary_key;
@@ -193,6 +193,12 @@ class CB_Model extends CI_Model
 		if ($where) {
 			$this->db->where($where);
 		}
+		if (!empty($where_in)) {            
+            if(is_array($where_in))
+                $this->db->where_in(key($where_in),$where_in[key($where_in)]);
+            else 
+                $this->db->where($where_in);
+        }
 		if ($search_where) {
 			$this->db->where($search_where);
 		}

@@ -44,8 +44,10 @@ class Media_click_log_model extends CB_Model
         if(!empty($where_in)) $where_in_['media_click_log.'.key($where_in)]=$where_in[key($where_in)];
         else $where_in_='';
         $select = 'media_click_log.*, post.mem_id as post_mem_id, post.post_userid, post.post_nickname, post.brd_id, post.post_datetime,
-            post.post_hit, post.post_secret, post.post_title';
+            post.post_hit, post.post_secret, post.post_title,cmall_item.cit_name,cmall_item.cit_file_1,cmall_item.cit_shopping_url';
         $join[] = array('table' => 'post', 'on' => 'media_click_log.post_id = post.post_id', 'type' => 'inner');
+        $join[] = array('table' => 'post_link', 'on' => 'media_click_log.pln_id = post_link.pln_id', 'type' => 'inner');
+        $join[] = array('table' => 'cmall_item', 'on' => 'post_link.pln_url = cmall_item.cit_shopping_url', 'type' => 'inner');
         $result = $this->_get_list_common($select, $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop,$where_in_);
 
         return $result;

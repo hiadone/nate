@@ -22,7 +22,7 @@
                 ob_start();
                 ?>
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="<?php echo element('listall_url', $view).'?'.$this->param->replace('post_id_[]') ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+                        <a href="<?php echo element('listall_url', $view).'?'.$this->param->replace('skeyword') ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
                         <!-- <button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button> -->
                     </div>
                 <?php
@@ -79,6 +79,8 @@
                         <tr>
                             <th><a href="<?php echo element('pl_id', element('sort', $view)); ?>">번호</a></th>
                             <th>제목</th>                            
+                            <th>상품명</th>
+                            <th>이미지</th>
                             <th>일시</th>
                             <th>IP</th>
                             <th>OS</th>
@@ -95,7 +97,13 @@
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php echo html_escape(element('post_title', $result)); ?><a href="<?php echo goto_url(element('post_url', $result)); ?>" target="_blank"><span class="fa fa-external-link"></span></a></td>
-                            
+                            <td><a href="?sfield=cmall_item.cit_name&skeyword=<?php echo element('cit_name', $result); ?>"><?php echo element('cit_name', $result); ?></a></td>
+                            <td><?php if (element('cit_file_1', $result)) {?>
+                                    <a href="<?php echo goto_url(html_escape(element('cit_shopping_url', $result))); ?>" target="_blank">
+                                        <img src="<?php echo thumb_url('cmallitem', element('cit_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+                                    </a>
+                                <?php } ?>
+                            </td>
                             <td><?php echo display_datetime(element('display_datetime', $result), 'full'); ?></td>
                             <!-- <td><?php echo element('pl_hit', $result) ? element('pl_hit', $result) : ''; ?></td> -->
                             

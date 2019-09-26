@@ -30,7 +30,7 @@
 
 	echo $this->board->latest($config);
 ?>
-
+</div>
 <div class="row">
 <?php
 

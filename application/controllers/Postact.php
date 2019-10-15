@@ -3665,7 +3665,7 @@ class Postact extends CB_Controller
 						break;
 
 					}
-					unlink(config_item('uploads_dir') . '/cmallitem/' .$_FILES['cit_file_' . $k]['name']);	
+					@unlink(config_item('uploads_dir') . '/cmallitem/' .$_FILES['cit_file_' . $k]['name']);	
 					
 				}
 			}

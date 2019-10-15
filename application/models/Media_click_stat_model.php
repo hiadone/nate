@@ -110,9 +110,14 @@ class Media_click_stat_model extends CB_Model
         
         $this->db->join('post', 'media_click_stat.post_id = post.post_id', 'inner');
 
-        $this->db->group_by('day,pln_id');
-        if($type==='domain') $this->db->order_by('mcs_cnt', $orderby);
+        if (!empty($skey)) 
+            $this->db->group_by('day,pln_id');
+        else
+            $this->db->group_by('day');
 
+        if($type==='domain') $this->db->order_by('mcs_cnt', $orderby);
+        else $this->db->order_by('pln_id', $orderby);
+        
         $qry = $this->db->get($this->_table);
         $result = $qry->result_array();
 

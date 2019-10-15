@@ -3665,7 +3665,7 @@ class Postact extends CB_Controller
 						break;
 
 					}
-					@unlink($_FILES['cit_file_' . $k]['name']);	
+					unlink(config_item('uploads_dir') . '/cmallitem/' .$_FILES['cit_file_' . $k]['name']);	
 					
 				}
 			}
@@ -3716,6 +3716,7 @@ class Postact extends CB_Controller
 				'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
 				'cit_download_days' => $cit_download_days,
 				'cit_shopping_url' => $this->input->post('cit_shopping_url', null, ''),
+				'cit_direct_url' => $this->input->post('cit_direct_url', null, ''),
 			);
 
 			for ($k = 1; $k <= 10; $k++) {

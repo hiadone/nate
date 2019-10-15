@@ -3,13 +3,16 @@ $this->managelayout->add_css(element('view_skin_url', $layout) . '/css/style.css
 $this->managelayout->add_css(base_url('assets/css/datepicker3.css'));
 $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.js'));
 $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
+
+
+$color_array = array('red','orange','yellow','green','blue','purple','pink','brown','gold','silver','black','gray');
  ?>
 <div class="box">
     <div class="box-table">
     <?php  echo '<h4 class="highlight mb20">미디어 통계</h4>'; ?>
         <div class="box-table-header">
             <ul class="nav nav-pills">
-                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir.'/lists/b-a-1?'.$this->param->output()); ?>'); ?>">캠페인 목록</a></li>
                     <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1?'.$this->param->output()); ?>">실시간 리스트</a></li>
                     <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1?'.$this->param->output()); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
@@ -47,6 +50,13 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                 <input type="hidden" name="datetime" value="<?php echo html_escape($this->input->get('datetime')); ?>" />
                 <input type="hidden" name="sfield" value="<?php echo html_escape($this->input->get('sfield')); ?>" />
                 <input type="hidden" name="skeyword" value="<?php echo html_escape($this->input->get('skeyword')); ?>" />
+                <?php 
+                if($this->input->get('post_id_')){
+                    foreach($this->input->get('post_id_') as $value){
+                        echo '<input type="hidden" name="post_id_[]" value="'.$value.'" />';
+                    }
+                }
+                 ?>                
                 <div class="box-table-button">
                     <?php if (element('boardlist', $view)) { 
                         $brd_name="";
@@ -66,7 +76,7 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                         기간 : <input type="text" class="form-control input-small datepicker"  name="start_date" value="<?php echo element('start_date', $view); ?>" readonly="readonly" /> - <input type="text" class="form-control input-small datepicker" name="end_date" value="<?php echo element('end_date', $view); ?>" readonly="readonly" />
                     </span>
                     <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn <?php echo ($this->input->get('datetype') === 'domain') ? 'btn-success' : 'btn-default'; ?> btn-sm" onclick="fdate_submit('domain');">유입 도메인별</button>
+                      <!--   <button type="button" class="btn <?php echo ($this->input->get('datetype') === 'domain') ? 'btn-success' : 'btn-default'; ?> btn-sm" onclick="fdate_submit('domain');">유입 도메인별</button> -->
                         <button type="button" class="btn <?php echo ($this->input->get('datetype') === 'week') ? 'btn-success' : 'btn-default'; ?> btn-sm" onclick="fdate_submit('week');">요일별</button>
                         <button type="button" class="btn <?php echo ($this->input->get('datetype') === 'h') ? 'btn-success' : 'btn-default'; ?> btn-sm" onclick="fdate_submit('h');">시간별</button>
                         <button type="button" class="btn <?php echo ($this->input->get('datetype') !== 'h' && $this->input->get('datetype') !== 'y' && $this->input->get('datetype') !== 'm' && $this->input->get('datetype') !== 'week' && $this->input->get('datetype') !== 'domain') ? 'btn-success' : 'btn-default'; ?> btn-sm" onclick="fdate_submit('d');">일별</button>
@@ -139,20 +149,37 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                     </div>
                 </div>
             </form>
+            <?php
+            $progress_color=array();
+            if (element('list',element('link', $view))) {
+                echo '<div class="form-group">';                
+                foreach (element('list',element('link', $view)) as $result) {
+                    $progress_color[element('pln_id',$result)] = array_pop($color_array);
+
+                    echo '<label for="allchkall" class="checkbox-inline"><span style="width:20px;height:15px;background-color:'.$progress_color[element('pln_id',$result)].';display:inline-block;"></span> '.html_escape(element('cit_summary',$result)).'</label>';
+
+                }
+                echo '</div>';
+            }
+
+            ?>
+
+
+
             <table class="table table-hover table-striped table-bordered">
                 <colgroup>
-                    <col class="col-md-2">
                     <col class="col-md-1">
                     <col class="col-md-1">
                     <col class="col-md-1">
                     <col class="col-md-1">
-                    <col class="col-md-6">
+                    <col class="col-md-1">
+                    <col class="col-md-7">
                 </colgroup>
                 <thead>
                     <tr>
                         <th><?php echo $this->input->get('datetype', null, 'd')==='domain'? '도메인':'일시'; ?></th>
-                        <th>미디어 클릭수</th>
-                        <th>상담신청 클릭수</th>
+                        <th>미디어 view count</th>
+                        <th>미디어 click count</th>
                         <th>클릭률</th>
                         <th>점유율</th>
                         <th>그래프</th>
@@ -181,10 +208,33 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                         <td><?php if(!empty(element('count', $result, 0))) echo round((element('hit_count', $result, 0)/element('count', $result, 0)*100),2); ?>%</td>
                         <td><?php echo element('s_rate', $result, 0); ?>%</td>
                         <td>
+                           
                             <div class="progress">
-                                <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?php echo element('s_rate', $result, 0); ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo element('s_rate', $result, 0); ?>%">
-                                    <span class=""><?php echo element('s_rate', $result, 0); ?>%</span>
+
+                                
+                                <?php 
+                                if(element('pln_cnt',$result)){
+                                    foreach(element('pln_cnt',$result) as $key_ => $value_){ 
+
+                                     
+                                ?>
+                                
+                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>%;background-color:<?php echo $progress_color[$key_]?>;">
+                                    <span class=""><?php echo $value_ ?></span>
                                 </div>
+                                <?php 
+                                    }
+                                } else { 
+                                ?>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?php echo element('s_rate', $result, 0); ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo element('s_rate', $result, 0); ?>%">
+                                            <span class="sr-only"><?php echo element('s_rate', $result, 0); ?>%</span>
+                                        </div>
+                                    </div>
+
+                                <?php 
+                                }
+                                ?>
                             </div>
                         </td>
                     </tr>
@@ -203,7 +253,27 @@ $this->managelayout->add_js(base_url('assets/js/bootstrap-datepicker.kr.js'));
                             <td><?php echo number_format(element('hit_sum_count', $view, 0)); ?></td>
                             
                             <td><?php if(!empty(element('sum_count', $view, 0))) echo round((element('hit_sum_count', $view, 0)/element('sum_count', $view, 0)*100),2); ?>%</td>
-                            <td></td>
+                            <td>100%</td>
+                            <td>
+                           
+                            <div class="progress">
+
+                                
+                                <?php 
+                                if(element('hit_sum_count_sub',$view)){
+                                    foreach(element('hit_sum_count_sub',$view) as $key_ => $value_){ 
+
+                                ?>
+                                
+                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>%;background-color:<?php echo $progress_color[$key_]?>;">
+                                    <span class=""><?php echo $value_ ?></span>
+                                </div>
+                                <?php 
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </td>
                         </tr>
                     </tfoot>
                 <?php
@@ -272,19 +342,42 @@ function drawChart() {
      
      
      <?php } else {?>
+
         data.addColumn('string', '기간');    
-        data.addColumn('number', '상담신청 클릭 수');
-        data.addColumn('number', '미디어 클릭 수');
+        
+        <?php 
+        if (element('list',element('link', $view))) {
+            foreach (element('list',element('link', $view)) as $result) {
+         ?>
+        data.addColumn('number', '<?php echo html_escape(element('cit_summary',$result))?> click');        
+            <?php } ?>
+        <?php } else { ?>
+            data.addColumn('number', '미디어 click count');
+        <?php } ?>
+        data.addColumn('number', '미디어 view');
         data.addRows([
             <?php
             if (element('list', $view)) {
                 foreach (element('list', $view) as $key => $result) {
             ?>
                
-            ['<?php if($this->input->get('datetype') === 'week') echo element($key, element('week_korean', $view)); 
-                else echo $key;
-            ?>',<?php echo element('count', $result, 0); ?>,<?php echo element('hit_count', $result, 0); ?>],
-            <?php
+                    ['<?php if($this->input->get('datetype') === 'week') echo element($key, element('week_korean', $view)); 
+                        else echo $key;
+                    ?>',
+                    <?php 
+                    
+                    if(element('list',element('link', $view))) {
+                        foreach (element('list',element('link', $view)) as $key_ => $result_) {
+                            echo element(element('pln_id',$result_),element('pln_cnt',$result)) ? element(element('pln_id',$result_),element('pln_cnt',$result)) : 0;
+                            echo ',';
+                        }
+                        echo element('count', $result, 0).',';
+                    } else { 
+
+                        echo element('hit_count', $result, 0).',';
+                        echo element('count', $result, 0).',';
+                    }                    
+                    echo '],';
                 }
             }
             ?>
@@ -303,16 +396,28 @@ function drawChart() {
         tooltipTextStyle: {color: '#006679', fontName: 'dotum', fontSize: '12'},
         hAxis: {textStyle: {color: '#959595', fontName: 'dotum', fontSize: '12'}},
         vAxis: {textStyle: {color: '#959595', fontName: 'dotum', fontSize: '12'}, gridlineColor: '#e1e1e1', baselineColor: '#e1e1e1', textPosition: 'out'},
-        series: {0: {targetAxisIndex:0},
-                   1:{targetAxisIndex:1,type: 'bars'},
+        series: {   
+            <?php 
+            $i=0;
+            foreach($progress_color as  $value){
+                echo $i .": { color: '".$value."' },";
+                $i++;
+            }
+
+             ?>
+            
+          
+                   <?php echo element('list',element('link', $view)) ? count(element('list',element('link', $view))) : 1; ?>:{targetAxisIndex:1,type: 'line'},
                   },
+        seriesType: 'bars',
         lineWidth: 3,
         pointSize: 5,
+        isStacked: true,
         vAxes: {
             // Adds titles to each axis.
             
-            0: {title: '상담신청 클릭 수'},
-            1: {title: '미디어 클릭 수'}
+            0: {title: '미디어 click count'},
+            1: {title: '미디어 view count'}
           }
     });
 

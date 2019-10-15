@@ -11,7 +11,7 @@
         <?php  echo '<h4 class="highlight mb20">미디어 log</h4>'; ?>
             <div class="box-table-header">
                 <ul class="nav nav-pills">
-                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir. '/lists/b-a-1'); ?>">캠페인 목록</a></li>
+                    <li role="presentation" ><a href="<?php echo site_url($this->pagedir. '/lists/b-a-1?'.$this->param->output()); ?>">캠페인 목록</a></li>
                     <li role="presentation" class="active"><a href="<?php echo site_url($this->pagedir . '/view_log/b-a-1?'.$this->param->output()); ?>">실시간 리스트</a></li>
                     <li role="presentation"><a href="<?php echo site_url($this->pagedir . '/graph/b-a-1?'.$this->param->output()); ?>">기간별 그래프</a></li>
                     <?php if (element('is_admin', $view)) { ?>
@@ -78,9 +78,11 @@
                     <thead>
                         <tr>
                             <th><a href="<?php echo element('pl_id', element('sort', $view)); ?>">번호</a></th>
-                            <th>제목</th>                            
+                            <th>제목</th>
+                            <?php if ($this->uri->segment(2) === 'click_log') { ?>                            
                             <th>상품명</th>
                             <th>이미지</th>
+                            <?php } ?>
                             <th>일시</th>
                             <th>IP</th>
                             <th>OS</th>
@@ -97,6 +99,8 @@
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php echo html_escape(element('post_title', $result)); ?><a href="<?php echo goto_url(element('post_url', $result)); ?>" target="_blank"><span class="fa fa-external-link"></span></a></td>
+
+                            <?php if ($this->uri->segment(2) === 'click_log') { ?>
                             <td><a href="?sfield=cmall_item.cit_name&skeyword=<?php echo element('cit_name', $result); ?>"><?php echo element('cit_name', $result); ?></a></td>
                             <td><?php if (element('cit_file_1', $result)) {?>
                                     <a href="<?php echo goto_url(html_escape(element('cit_shopping_url', $result))); ?>" target="_blank">
@@ -104,6 +108,7 @@
                                     </a>
                                 <?php } ?>
                             </td>
+                            <?php } ?>
                             <td><?php echo display_datetime(element('display_datetime', $result), 'full'); ?></td>
                             <!-- <td><?php echo element('pl_hit', $result) ? element('pl_hit', $result) : ''; ?></td> -->
                             

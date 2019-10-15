@@ -97,7 +97,8 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			<?php } ?>
 			<li class="list-group-item">
 				<div class="col-sm-2"> <strong>미디어 랜딩 URL</strong></div>
-				<div class="list-group-item-text" style="min-height:20px;"><i class="fa fa-link"></i> <a href="<?php echo element('media_view', $view); ?>" target="_blank"><?php echo html_escape(element('media_view', $view)); ?></a></div>
+				<div class="list-group-item-text" style="min-height:20px;"><i class="fa fa-link"></i> <a href="<?php echo element('media_view', $view); ?>" target="_blank"><?php echo html_escape(element('media_view', $view)); ?></a>			<a href="<?php echo base_url('stat/view_log/'.element('brd_key', element('board',$view)));?>?post_id_[]=<?php echo element('post_id', element('post', $view)); ?>" class="btn btn-success btn-xs ml20">통계보러가기</a>
+				</div>
 			</li>
 		</ul>
 	           

@@ -583,8 +583,28 @@ class Stat extends CB_Controller
         $this->Media_view_stat_model->allow_search_field = array('mcs_id', 'post.post_title'); // 검색이 가능한 필드
         $this->Media_view_stat_model->search_field_equal = array('mcs_id', 'post.post_title'); // 검색중 like 가 
 
-        
-        
+         if(!empty($this->input->get('post_id_', null, 0))) {
+            $where_in['post_id'] = $this->input->get('post_id_');            
+            if(!empty($where_in['post_id'][0])){
+                $post['extravars'] = $this->Post_extra_vars_model->get_all_meta($where_in['post_id'][0]);
+
+                
+                if(!empty($post['extravars']['campaign_multi']))
+                $view['view']['campaign_multi'] = $post['extravars']['campaign_multi'];
+                
+            }
+            
+
+        }
+        if(!empty($this->input->get('post_id_', null, 0))) {
+            $this->load->model('Post_link_model');            
+            $linkwhere = array(
+                'post_id' => element(0,$this->input->get('post_id_'))
+            );
+            $view['view']['link'] = $this->Post_link_model
+                ->get_list('', '', $linkwhere, '',  'pln_id', 'ASC');
+
+        }
         
 
         $where=array();
@@ -636,6 +656,7 @@ class Stat extends CB_Controller
         $week_korean = array('월', '화', '수', '목', '금', '토', '일');
         $sum_count = 0;
         $hit_sum_count = 0;
+        $hit_sum_count_sub = array();
         $arr = array();
         $max = 0;
 
@@ -688,14 +709,32 @@ class Stat extends CB_Controller
 
                     
                     if ( ! isset($arr[$s])) {
-                        
+                        $arr[$s]['pln_cnt'] = array();
                         $arr[$s]['mcs_cnt'] = 0;
                     }
-                    
+
+                     if(!empty($this->input->get('post_id_', null, 0))) {
+                        if(isset($arr[$s]['pln_cnt'][element('pln_id', $value)]))
+                            $arr[$s]['pln_cnt'][element('pln_id', $value)] += element('mcs_cnt', $value);
+                        else 
+                            $arr[$s]['pln_cnt'][element('pln_id', $value)] = element('mcs_cnt', $value);
+
+                        if(isset($hit_sum_count_sub[element('pln_id', $value)]))
+                            $hit_sum_count_sub[element('pln_id', $value)] += element('mcs_cnt', $value);
+                        else 
+                            $hit_sum_count_sub[element('pln_id', $value)] = element('mcs_cnt', $value);
+
+                    }
+                    if(isset($arr[$s]['pln_cnt_sum']))
+                        $arr[$s]['pln_cnt_sum'] += element('mcs_cnt', $value);
+                    else 
+                        $arr[$s]['pln_cnt_sum'] = element('mcs_cnt', $value);
+
                     $arr[$s]['mcs_cnt'] += element('mcs_cnt', $value);
                     // if ($arr[$s]['cnt'] > $max) {
                     //     $max = $arr[$s]['cnt'];
                     // }
+                    
                     
                     $hit_sum_count += element('mcs_cnt', $value);
                 }
@@ -752,11 +791,15 @@ class Stat extends CB_Controller
                     if($max) $bar = (int)($count / $max * 100);
                     else $bar = 0;
                 }
+                $result[$key]['pln_cnt'] = element('pln_cnt',$value);
+                $result[$key]['pln_cnt_sum'] = element('pln_cnt_sum',$value);
+                
                 $result[$key]['bar'] = $bar;
             }
             $view['view']['max_value'] = $max;
             $view['view']['sum_count'] = $sum_count;
             $view['view']['hit_sum_count'] = $hit_sum_count;
+            $view['view']['hit_sum_count_sub'] = $hit_sum_count_sub;
             $view['view']['week_korean'] = $week_korean;
         }
 

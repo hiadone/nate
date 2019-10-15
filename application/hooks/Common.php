@@ -20,7 +20,7 @@ class _Common
 			return;
 		}
 
-		if ($CI->uri->segment(1) === 'main' || $CI->uri->segment(1) === 'board' || $CI->uri->segment(1) === 'post' || $CI->uri->segment(1) === 'search' || $CI->uri->segment(1) === 'stat' || $CI->uri->segment(1) === 'group') 
+		if (empty($CI->uri->segment(1)) || $CI->uri->segment(1) === 'main' || $CI->uri->segment(1) === 'board' || $CI->uri->segment(1) === 'post' || $CI->uri->segment(1) === 'search' || $CI->uri->segment(1) === 'stat' || $CI->uri->segment(1) === 'group') 
             required_user_login();
 		
 		if (config_item('use_lock_ip') && $CI->cbconfig->item('site_ip_whitelist')) {

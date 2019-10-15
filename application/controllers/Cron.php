@@ -87,7 +87,7 @@ class Cron extends CB_Controller {
 
         // 이벤트가 존재하면 실행합니다
         Events::trigger('before', $eventname);
-        $date = new DateTime('-3 day');
+        $date = new DateTime('-2 day');
         
         $url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
         echo $url."<br>";
@@ -131,7 +131,8 @@ class Cron extends CB_Controller {
                     'pplCategory' => element('pplCategory',$value),
                     'orgChannelID' => element('orgChannelID',$value),               
                     'cit_status' => 1,
-                    'cit_shopping_url' => element('shopping_url',$value),               
+                    'cit_shopping_url' => element('shopping_url',$value),   
+                    'cit_direct_url' => element('direct_url',$value),                           
                     );
 
             

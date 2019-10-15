@@ -88,7 +88,7 @@ class Cmallitem extends CB_Controller
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
-		$this->{$this->modelname}->allow_search_field = array('cit_id', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
+		$this->{$this->modelname}->allow_search_field = array('cit_id', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price','cit_direct_url'); // 검색이 가능한 필드
 		$this->{$this->modelname}->search_field_equal = array('cit_id', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
 		$this->{$this->modelname}->allow_order_field = array('cit_id', 'cit_key', 'cit_order', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
 		$result = $this->{$this->modelname}
@@ -146,7 +146,7 @@ class Cmallitem extends CB_Controller
 		/**
 		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
 		 */
-		$search_option = array('cit_key' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_mobile_content' => '모바일상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격');
+		$search_option = array('cit_key' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_mobile_content' => '모바일상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격', 'cit_direct_url' => '상품 URL');
 		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
 		$view['view']['search_option'] = search_option($search_option, $sfield);
 		$view['view']['listall_url'] = admin_url($this->pagedir);
@@ -1083,7 +1083,7 @@ class Cmallitem extends CB_Controller
 
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('before', $eventname);
-		$date = new DateTime('-3 day');
+		$date = new DateTime('-2 day');
 		
 		$url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
 		echo $url;
@@ -1128,6 +1128,7 @@ class Cmallitem extends CB_Controller
 					'orgChannelID' => element('orgChannelID',$value),				
 					'cit_status' => 1,
 					'cit_shopping_url' => element('shopping_url',$value),               
+					'cit_direct_url' => element('direct_url',$value),               
 					);
 
 			

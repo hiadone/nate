@@ -80,7 +80,7 @@
                             <td><?php echo html_escape(element('cit_name', $result)); ?></td>
                             <td><?php echo html_escape(element('cit_summary', $result)); ?></td>
                             <td><?php echo html_escape(element('cit_price', $result)); ?></td>
-                            <td><button class="btn btn-default btn-xs cit_shopping_url" data-cit_shopping_url="<?php echo element('cit_shopping_url', $result); ?>" onClick="add();">선택</button></td>
+                            <td><button class="btn btn-default btn-xs cit_shopping_url" data-cit_shopping_url="<?php echo element('cit_shopping_url', $result); ?>" >선택</button></td>
                         </tr>
                     <?php
                         }
@@ -114,3 +114,5 @@ $(document).on('click', '.cit_shopping_url', function() {
 
 //]]>
 </script>
+
+

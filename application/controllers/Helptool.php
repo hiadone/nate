@@ -1257,7 +1257,7 @@ class Helptool extends CB_Controller
 		/**
 		 * 페이지네이션을 생성합니다
 		 */
-		$config['base_url'] = site_url('helptool/cmallitem_list/') . '?' . $param->replace('page');
+		$config['base_url'] = site_url('helptool/cmallitem_list/'.$element_id) . '?' . $param->replace('page');
 		$config['total_rows'] = $result['total_rows'];
 		$config['per_page'] = $per_page;
 		$this->pagination->initialize($config);

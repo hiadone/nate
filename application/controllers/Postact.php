@@ -3965,7 +3965,9 @@ class Postact extends CB_Controller
     	$config = array(
     		'skin' => 'bootstrap',
     		'brd_key' => element('brd_key', $board),
-    		'post_id' => $post_id,    		
+    		'post_id' => $post_id,
+    		
+    		
     	);
     	if($type==='iframe')
     		echo $this->board->media_iframe($config);

@@ -997,7 +997,7 @@ class Board extends CI_Controller
 		$brd_key = element('brd_key', $config);
 		$image_width = element('image_width', $config) ? element('image_width', $config) : '240';
 		$image_height = element('image_height', $config) ? element('image_height', $config) : '120';
-		$cache_minute = element('cache_minute', $config) ? element('cache_minute', $config) : '120';
+		$cache_minute = element('cache_minute', $config,120);
 
 		if (empty($post_id) || empty($brd_key)) {
             show_404();

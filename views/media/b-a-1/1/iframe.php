@@ -50,13 +50,25 @@ function goLinkpageid(url)
     <?php
     if (element('link', $view)) {
         foreach (element('link', $view) as $result) {
+        $cit_summary = array();
+        $cit_summary = explode('<br>',element('cit_summary',element('item',$result)));
+
     ?>
        <div class="layout">
         <div class="thum">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank"><img src="<?php echo element('aws_image_url',element('item',$result)) ?>" border="0">
             </a>
         </div>
-        <div class="summary"><a href="<?php echo site_url(element('media_click',$result)); ?>"><?php echo element('cit_summary',element('item',$result)) ?></a></div>
+        <div class="summary">
+            <a href="<?php echo site_url(element('media_click',$result)); ?>">
+                <div style="overflow: hidden;white-space: nowrap;">
+                <?php echo $cit_summary[0] ?>
+                </div>
+                <div style="overflow: hidden;white-space: nowrap;">
+                <?php echo $cit_summary[1] ?>
+                </div>
+            </a>
+        </div>
     </div>
     <?php
         }

@@ -7,11 +7,11 @@ document.write("<style type='text/css'>"+
     "clear: both;}"+
 "#foin_pageid .layout{"+
     "float: left;"+
-    "width: 49%;"+
+    "width: 32%;"+
     "height: 140px;"+
     "margin-right: 2%;"+
     "margin-bottom: 7px;}"+
-"#foin_pageid .layout:nth-child(2n){"+
+"#foin_pageid .layout:nth-child(3n){"+
     "margin-right: 0;}"+
  "#foin_pageid .layout a img{"+
     "display: inline-block;"+

@@ -48,7 +48,7 @@ document.write("<style type='text/css'>"+
             "<a href='<?php echo element('media_click',$result); ?>' target='_blank'><img src='<?php echo element('aws_image_url',element('item',$result)) ?>' border='0'>"+
             "</a>"+
         "</div>"+
-        "<div class='summary'><a href='<?php echo site_url(element('media_click',$result)); ?>'><div style='overflow: hidden;white-space: nowrap;'><?php echo $cit_summary[0] ?></div><div style='overflow: hidden;white-space: nowrap;'><?php echo $cit_summary[1] ?></div></a></div>"+
+        "<div class='summary'><a href='<?php echo element('media_click',$result); ?>'><div style='overflow: hidden;white-space: nowrap;'><?php echo $cit_summary[0] ?></div><div style='overflow: hidden;white-space: nowrap;'><?php echo $cit_summary[1] ?></div></a></div>"+
     "</div>"+
     <?php
         }

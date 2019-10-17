@@ -60,7 +60,7 @@ function goLinkpageid(url)
             </a>
         </div>
         <div class="summary">
-            <a href="<?php echo site_url(element('media_click',$result)); ?>">
+            <a href="<?php echo element('media_click',$result); ?>">
                 <div style="overflow: hidden;white-space: nowrap;">
                 <?php echo $cit_summary[0] ?>
                 </div>

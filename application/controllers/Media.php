@@ -132,6 +132,110 @@ class Media extends CB_Controller
     }
 
 
+    public function media_view($post_id,$type='iframe')
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_postact_link';
+        $this->load->event($eventname);
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('before', $eventname);
+
+        
+        if (empty($post_id) ) {
+            show_404();
+        }
+
+        
+        // if ( ! $this->session->userdata('post_id_' . element('post_id', $link))) {
+        //     alert('해당 게시물에서만 접근 가능합니다');
+        // }
+        
+        $view['type'] = $type;
+        $select = 'post_id,brd_id';
+        $view['post'] = $post = $this->Post_model->get_one($post_id,$select);
+        
+
+        if ( ! element('post_id', $post)) {
+            show_404();
+        }
+        
+        $view['board'] = $board = $this->board->item_all(element('brd_id', $post));
+
+        if ( ! element('brd_id', $board)) {
+            show_404();
+        }
+        // $this->load->model(array('Post_link_model'));
+        // $linkwhere = array(
+        //         'post_id' =>  element('post_id', $post),
+        //     );
+
+        
+
+        // $link = $this->Post_link_model->get_one('','',$linkwhere);
+
+        
+
+        // if ( ! $this->session->userdata('post_link_click_' . element('pln_id', $link))) {
+
+            // $this->session->set_userdata(
+            //     'post_link_click_' . element('pln_id', $link),
+            //     '1'
+            // );
+
+                $insertdata = array(
+                    'post_id' => element('post_id', $post),
+                    'brd_id' => element('brd_id', $post),
+                    'mvl_datetime' => cdate('Y-m-d H:i:s'),
+                    'mvl_ip' => $this->input->ip_address(),
+                    'mvl_useragent' => $this->agent->agent_string(),
+                    'mvl_referrer' => $this->agent->referrer(),
+                );
+                $this->load->model('Media_view_log_model');
+                $this->Media_view_log_model->insert($insertdata);
+            
+            // $this->Post_link_model->update_plus(element('pln_id', $link), 'pln_hit', 1);
+        // }
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('after', $eventname);
+
+
+        $layoutconfig = array(
+            'layout' => 'blank',
+            'skin' => 'index',
+            'layout_dir' => 'bootstrap',
+            'skin_dir' => 'media/'.element('brd_key', $board).'/'.element('post_id', $post),
+            'mobile_skin_dir' => 'media/'.element('brd_key', $board).'/'.element('post_id', $post),
+            'mobile_layout_dir' => 'bootstrap',
+            
+        );
+
+
+        $view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+        $this->data = $view;
+        
+        $this->layout = element('layout_skin_file', element('layout', $view));
+        $this->view = element('view_skin_file', element('layout', $view));
+
+        
+
+        // $config = array(
+        //     'skin' => 'bootstrap',
+        //     'brd_key' => element('brd_key', $board),
+        //     'post_id' => $post_id,
+            
+        // );
+        // if($type==='iframe')
+        //     $this->board->media_iframe($config);
+        // elseif($type==='script')
+        //     $this->board->media_script($config);
+
+        
+
+    }
+
 
     // public function iframe($brd_key = 0,$post_id = 0)
     // {

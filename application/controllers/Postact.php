@@ -3969,9 +3969,9 @@ class Postact extends CB_Controller
     		
     	);
     	if($type==='iframe')
-    		echo $this->board->media_iframe($config);
+    		$this->board->media_iframe($config);
     	elseif($type==='script')
-        	echo $this->board->media_script($config);
+        	$this->board->media_script($config);
 
         
 

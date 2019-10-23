@@ -3870,9 +3870,9 @@ class Postact extends CB_Controller
                     'post_id' => element('post_id', $link),
                     'brd_id' => element('brd_id', $link),
                     'mcl_datetime' => cdate('Y-m-d H:i:s'),
-                    'mcl_ip' => $this->input->ip_address(),
-                    'mcl_useragent' => $this->agent->agent_string() ? $this->agent->agent_string() : '',
-                    'mcl_referrer' => $this->agent->referrer(),
+                    'mcl_ip' => '',
+                    'mcl_useragent' => '',
+                    'mcl_referrer' => '',
                 );
                 $this->load->model('Media_click_log_model');
                 $this->Media_click_log_model->insert($insertdata);
@@ -3946,9 +3946,9 @@ class Postact extends CB_Controller
                     'post_id' => element('post_id', $post),
                     'brd_id' => element('brd_id', $post),
                     'mvl_datetime' => cdate('Y-m-d H:i:s'),
-                    'mvl_ip' => $this->input->ip_address(),
-                    'mvl_useragent' => $this->agent->agent_string(),
-                    'mvl_referrer' => $this->agent->referrer(),
+                    'mvl_ip' => '',
+                    'mvl_useragent' => '',
+                    'mvl_referrer' => '',
                 );
                 $this->load->model('Media_view_log_model');
                 $this->Media_view_log_model->insert($insertdata);

@@ -167,7 +167,7 @@ class Board_post extends CB_Controller
 			show_404();
 		}
 
-		$view['view']['media_url'] = site_url('media/'.element('brd_key', $board).'/'.$post_id);
+		$view['view']['media_url'] = site_url('media/media_view/'.$post_id.'/'.element('brd_key',$board));
 		$view['view']['media_view'] = site_url('postact/media_view/'.$post_id);
 
 		$skeyword = $this->input->get('skeyword', null, '');

@@ -132,7 +132,7 @@ class Media extends CB_Controller
     }
 
 
-    public function media_view($post_id,$type='iframe')
+    public function media_view($post_id,$brd_key,$type='iframe')
     {
 
         // 이벤트 라이브러리를 로딩합니다
@@ -143,7 +143,7 @@ class Media extends CB_Controller
         Events::trigger('before', $eventname);
 
         
-        if (empty($post_id) ) {
+        if (empty($post_id) || empty($brd_key) ) {
             show_404();
         }
 
@@ -151,21 +151,6 @@ class Media extends CB_Controller
         // if ( ! $this->session->userdata('post_id_' . element('post_id', $link))) {
         //     alert('해당 게시물에서만 접근 가능합니다');
         // }
-        
-        $view['type'] = $type;
-        $select = 'post_id,brd_id';
-        $view['post'] = $post = $this->Post_model->get_one($post_id,$select);
-        
-
-        if ( ! element('post_id', $post)) {
-            show_404();
-        }
-        
-        $view['board'] = $board = $this->board->item_all(element('brd_id', $post));
-
-        if ( ! element('brd_id', $board)) {
-            show_404();
-        }
         // $this->load->model(array('Post_link_model'));
         // $linkwhere = array(
         //         'post_id' =>  element('post_id', $post),
@@ -175,7 +160,8 @@ class Media extends CB_Controller
 
         // $link = $this->Post_link_model->get_one('','',$linkwhere);
 
-        
+        $view['view']['post_id']=$post_id;
+        $view['view']['brd_key']=$brd_key;
 
         // if ( ! $this->session->userdata('post_link_click_' . element('pln_id', $link))) {
 
@@ -185,12 +171,12 @@ class Media extends CB_Controller
             // );
 
                 $insertdata = array(
-                    'post_id' => element('post_id', $post),
-                    'brd_id' => element('brd_id', $post),
+                    'post_id' => $post_id,
+                    'brd_id' => '',
                     'mvl_datetime' => cdate('Y-m-d H:i:s'),
-                    'mvl_ip' => $this->input->ip_address(),
-                    'mvl_useragent' => $this->agent->agent_string(),
-                    'mvl_referrer' => $this->agent->referrer(),
+                    'mvl_ip' => '',
+                    'mvl_useragent' => '',
+                    'mvl_referrer' => '',
                 );
                 $this->load->model('Media_view_log_model');
                 $this->Media_view_log_model->insert($insertdata);
@@ -206,8 +192,8 @@ class Media extends CB_Controller
             'layout' => 'blank',
             'skin' => 'index',
             'layout_dir' => 'bootstrap',
-            'skin_dir' => 'media/'.element('brd_key', $board).'/'.element('post_id', $post),
-            'mobile_skin_dir' => 'media/'.element('brd_key', $board).'/'.element('post_id', $post),
+            'skin_dir' => 'media/'.$brd_key.'/'.$post_id,
+            'mobile_skin_dir' => 'media/'.$brd_key.'/'.$post_id,
             'mobile_layout_dir' => 'bootstrap',
             
         );

@@ -47,6 +47,7 @@ function goLinkpageid(url)
 
 
 <div id="foin_pageid">
+    <h2>TV 속 이 상품</h2>
     <?php
     if (element('link', $view)) {
         foreach (element('link', $view) as $result) {

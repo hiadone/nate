@@ -219,7 +219,7 @@ $color_array = array('red','orange','yellow','green','blue','purple','pink','bro
                                      
                                 ?>
                                 
-                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>%;background-color:<?php echo empty($progress_color[$key_]) ?? $progress_color[$key_]?>;">
+                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('pln_cnt_sum',$result) * element('s_rate', $result, 0)) ?>%;background-color:<?php echo !empty($progress_color[$key_]) ? $progress_color[$key_] : '' ?>;">
                                     <span class=""><?php echo $value_ ?></span>
                                 </div>
                                 <?php 
@@ -265,7 +265,7 @@ $color_array = array('red','orange','yellow','green','blue','purple','pink','bro
 
                                 ?>
                                 
-                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>%;background-color:<?php echo empty($progress_color[$key_]) ?? $progress_color[$key_]?>;">
+                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>" aria-valuemin="0" aria-valuemax="<?php echo element('max_value', $view, 0); ?>" style="width: <?php echo ($value_ /element('hit_sum_count',$view) * 100) ?>%;background-color:<?php echo !empty($progress_color[$key_]) ? $progress_color[$key_] : '' ?>;">
                                     <span class=""><?php echo $value_ ?></span>
                                 </div>
                                 <?php 

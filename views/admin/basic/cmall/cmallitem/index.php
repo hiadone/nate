@@ -60,7 +60,7 @@
 							</td>
 							<td>
 								<?php if (element('cit_file_1', $result)) {?>
-									<a href="<?php echo goto_url(html_escape(element('cit_shopping_url', $result))); ?>" target="_blank">
+									<a href="<?php echo html_escape(element('cit_shopping_url', $result)); ?>" target="_blank">
 										<img src="<?php echo thumb_url('cmallitem', element('cit_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
 									</a>
 								<?php } ?>

@@ -270,6 +270,12 @@
 						<input type="text" class="form-control" name="cit_shopping_url" value="<?php echo set_value('cit_shopping_url', element('cit_shopping_url', element('data', $view))); ?>" />
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">direct URL</label>
+					<div class="col-sm-10 ">
+						<input type="text" class="form-control" name="cit_direct_url" value="<?php echo set_value('cit_direct_url', element('cit_direct_url', element('data', $view))); ?>" />
+					</div>
+				</div>
 			<!-- 	<div class="form-group">
 					<label class="col-sm-2 control-label">다운로드 가능기간</label>
 					<div class="col-sm-10 form-inline">

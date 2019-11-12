@@ -146,7 +146,7 @@ class Cmallitem extends CB_Controller
 		/**
 		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
 		 */
-		$search_option = array('cit_key' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_mobile_content' => '모바일상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격', 'cit_direct_url' => '상품 URL');
+		$search_option = array('cit_key' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_mobile_content' => '모바일상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격', 'cit_direct_url' => 'Direct URL');
 		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
 		$view['view']['search_option'] = search_option($search_option, $sfield);
 		$view['view']['listall_url'] = admin_url($this->pagedir);
@@ -1084,8 +1084,15 @@ class Cmallitem extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('before', $eventname);
 		$date = new DateTime('-2 day');
+
+		$begin_day = new DateTime();
+		$end_day = new DateTime('-1 day');
 		
 		$url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
+
+		$url = 'http://open.api.tingle.kr/item/list?mode=report&begin_day='.$begin_day->format('Ym').'01&end_day='.$end_day->format('Ymd').'&limit=10&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
+
+		
 		echo $url;
 		$data = array();
 

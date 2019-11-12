@@ -1460,6 +1460,8 @@ class Stat extends CB_Controller
 
                 $result['list'][$key]['member_group_name'] = '';
 
+                $result['list'][$key]['media_url'] = site_url('media/media_view/'.element('post_id', $val).'/'.element('brd_key',$board));
+                
                 $where = array(
                     'mem_id' => element('mem_id', $val),
                 );

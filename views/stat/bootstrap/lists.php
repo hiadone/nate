@@ -56,7 +56,8 @@
                             <!-- <th><input type="checkbox" name="chkall" id="chkall" /></th> -->
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
+
                     <?php
                     if (element('list', element('data', element('list', $view)))) {
                         foreach (element('list', element('data', element('list', $view))) as $result) {
@@ -68,7 +69,7 @@
                             <!-- <td><?php echo html_escape(element('member_group_name', $result)); ?></td>
                             <td><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('title', $result)); ?>" title="<?php echo html_escape(element('title', $result)); ?>" class="thumbnail img-responsive px50"  /></td> -->
                             <td><?php 
-                                echo '<div><i class="fa fa-link"></i><a href="'.site_url('postact/media_view/'.element('post_id', $result)).'" target="_blank">'.site_url('postact/media_view/'.element('post_id', $result)).'</a></div>';
+                                echo '<div><i class="fa fa-link"></i><a href="'.element('media_url', $result).'" target="_blank">'.element('media_url', $result).'</a></div>';
                                     
                                  ?>
                             </td>

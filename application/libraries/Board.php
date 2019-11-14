@@ -1065,7 +1065,7 @@ class Board extends CI_Controller
 
                     if ($item['cit_file_1']) {
                         $view['view']['link'][$key]['item']['cit_file_1'] = site_url(config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1', $item));
-                        $view['view']['link'][$key]['item']['aws_image_url'] = "http://d2b5p43s4lz69z.cloudfront.net/".config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1', $item).'?w=200';                                                
+                        $view['view']['link'][$key]['item']['aws_image_url'] = "https://d2b5p43s4lz69z.cloudfront.net/".config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1', $item).'?w=200';                                                
                     }
                     $view['view']['link'][$key]['media_click'] = site_url('postact/media_click/' . element('pln_id', $value));
                 }

@@ -5,17 +5,23 @@
     display: block;
     clear: both;
 }
+#foin_pageid {
+    padding: 0 15px;
+}
 #foin_pageid .layout{
     float: left;
     width: 32%;
     height: 140px;
     margin-right: 2%;
-    margin-bottom: 7px;
+    margin-bottom: 6px;
 }
-#foin_pageid .layout:nth-child(3n){
+#foin_pageid .layout:nth-child(3n+1){
     margin-right: 0;
 }
- #foin_pageid .layout a img{
+#foin_pageid .layout .thum {
+    font-size: 0;    
+}
+#foin_pageid .layout a img{
     display: inline-block;
     width: 100%;
     height: 100px;
@@ -55,7 +61,7 @@ function goLinkpageid(url)
         $cit_summary = explode('<br>',element('cit_summary',element('item',$result)));
 
     ?>
-       <div class="layout">
+    <div class="layout">
         <div class="thum">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank"><img src="<?php echo element('aws_image_url',element('item',$result)) ?>" border="0">
             </a>

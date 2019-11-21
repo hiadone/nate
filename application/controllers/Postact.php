@@ -3708,7 +3708,7 @@ class Postact extends CB_Controller
 				'cit_type3' => $cit_type3,
 				'cit_type4' => $cit_type4,
 				'cit_status' => $cit_status,
-				'cit_summary' => $this->input->post('cit_summary', null, ''),
+				'cit_summary' => $this->input->post('programName', null, '')."\n".$this->input->post('cit_summary', null, ''),
 				'cit_content' => $this->input->post('cit_content', null, ''),
 				'cit_mobile_content' => $this->input->post('cit_mobile_content', null, ''),
 				'cit_content_html_type' => $content_type,

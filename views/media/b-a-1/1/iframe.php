@@ -58,7 +58,7 @@ function goLinkpageid(url)
     if (element('link', $view)) {
         foreach (element('link', $view) as $result) {
         $cit_summary = array();
-        $cit_summary = explode('<br>',element('cit_summary',element('item',$result)));
+        $cit_summary = explode("\n",element('cit_summary',element('item',$result)));
 
     ?>
     <div class="layout">
@@ -68,12 +68,21 @@ function goLinkpageid(url)
         </div>
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
-                <div style="overflow: hidden;white-space: nowrap;">
-                <?php echo $cit_summary[0] ?>
-                </div>
-                <div style="overflow: hidden;white-space: nowrap;">
-                <?php echo $cit_summary[1] ?>
-                </div>
+                <?php if(count($cit_summary) > 1){ ?>
+                    <div style="overflow: hidden;white-space: nowrap;">
+                    <<?php echo $cit_summary[0] ?>>
+                    </div>
+                    <div style="overflow: hidden;white-space: nowrap;">
+                    <?php echo $cit_summary[1] ?>
+                    </div>    
+                <?php } else {?>
+                    <div style="overflow: hidden;white-space: nowrap;">                    
+                    </div>
+                    <div style="overflow: hidden;white-space: nowrap;">
+                    <?php echo $cit_summary[0] ?>
+                    </div>    
+                <?php }?>
+                
             </a>
         </div>
     </div>

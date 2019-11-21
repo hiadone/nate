@@ -13,6 +13,7 @@ application/logs/*
 !application/*/.htaccess
 
 uploads/*
+application/uploads/*
 application/config/config.php
 application/config/cb_config.php
 application/config/database.php

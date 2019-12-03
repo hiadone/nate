@@ -77,6 +77,7 @@ function goLinkpageid(url)
                     <span  style="overflow: hidden;white-space: nowrap;">
                     <<?php echo $cit_summary[0] ?>>
                     </span>
+                    <div></div>
                     <span  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[1] ?>
                     </span>    

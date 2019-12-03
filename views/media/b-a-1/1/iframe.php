@@ -108,50 +108,35 @@ function goLinkpageid(url)
     $("div.summary").each(function(){
         var _span = 0 ;
         var _span2 = 0 ;
-        if($(this).width() < $(this).children().children('span').first().width()){            
-            $(this).children().children('span').first().css('letter-spacing',-1);
-            _span=-1;
-            if($(this).width() < $(this).children().children('span').first().width()){            
-                $(this).children().children('span').first().css('letter-spacing',-2);
-                _span=-2;
-                if($(this).width() < $(this).children().children('span').first().width()){            
-                    $(this).children().children('span').first().css('letter-spacing',-3);
-                    _span=-3;
-                    if($(this).width() < $(this).children().children('span').first().width()){            
-                        $(this).children().children('span').first().css('letter-spacing',-4);
-                        _span=-4;
-                        if($(this).width() < $(this).children().children('span').first().width()){            
-                            $(this).children().children('span').first().css('letter-spacing',-5);
-                            _span=-5;
-                        }
-                    }
-                }
+        for (var i = 1; i < 10; i++) {
+            if($(this).width() < $(this).children().children('span').first().width()){                
+                
+                $(this).children().children('span').first().css('letter-spacing',-i);
+            } else{
+
+                _span = i-1;
+                $(this).children().children('div').first().css('letter-spacing',-_span);
+                break;
+            }
+        }
+        
+
+        
+
+        for (var i = 1; i < 10; i++) {
+            if($(this).width() < $(this).children().children('span:eq(1)').width()){                
+                
+                $(this).children().children('span:eq(1)').css('letter-spacing',-i);
+            } else{
+
+                _span2 = i-1;
+                $(this).children().children('div:eq(1)').css('letter-spacing',_span2);
+                break;
             }
         }
 
-        $(this).children().children('div').first().css('letter-spacing',_span);
-
-        if($(this).width() < $(this).children().children('span:eq(1)').width()){
-            $(this).children().children('div:eq(1)').css('letter-spacing',-1);
-            _span2=-1;
-            if($(this).width() < $(this).children().children('span:eq(1)').width()){
-                $(this).children().children('div:eq(1)').css('letter-spacing',-2);
-                _span2=-2;
-                if($(this).width() < $(this).children().children('span:eq(1)').width()){
-                    $(this).children().children('div:eq(1)').css('letter-spacing',-3);
-                    _span2=-3;
-                    if($(this).width() < $(this).children().children('span:eq(1)').width()){
-                        $(this).children().children('div:eq(1)').css('letter-spacing',-4);
-                        _span2=-4;
-                        if($(this).width() < $(this).children().children('span:eq(1)').width()){
-                            $(this).children().children('div:eq(1)').css('letter-spacing',-5);
-                            _span2=-5;
-                        }
-                    }
-                }
-            }
-        }
-        $(this).children().children('div:eq(1)').css('letter-spacing',_span2);
+        
+        
     });
 
 </script>

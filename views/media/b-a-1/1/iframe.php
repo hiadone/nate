@@ -19,13 +19,16 @@
     margin-right: 0;
 }
 #foin_pageid .layout .thum {
-    font-size: 0;    
+    font-size: 0;
+    text-align: center;
+    background-color: #fff;
 }
 #foin_pageid .layout a img{
     display: inline-block;
     width: 100%;
     height: 100px;
     margin-bottom: 5px;
+    object-fit: contain;
 }
  #foin_pageid .layout .summary{
     display: inline-block;
@@ -40,6 +43,7 @@
     display: inline-block;
     text-decoration: none;
     color: #000;
+    width: 100%;
 }
 </style>
 <script>
@@ -55,6 +59,7 @@ function goLinkpageid(url)
 <div id="foin_pageid">
     <div style="font-weight: bold;">TV 속 이 상품</div>
     <?php
+    $i=0;
     if (element('link', $view)) {
         foreach (element('link', $view) as $result) {
         $cit_summary = array();
@@ -69,18 +74,16 @@ function goLinkpageid(url)
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
                 <?php if(count($cit_summary) > 1){ ?>
-                    <div style="overflow: hidden;white-space: nowrap;">
+                    <span  style="overflow: hidden;white-space: nowrap;">
                     <<?php echo $cit_summary[0] ?>>
-                    </div>
-                    <div style="overflow: hidden;white-space: nowrap;">
+                    </span>
+                    <span  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[1] ?>
-                    </div>    
-                <?php } else {?>
-                    <div style="overflow: hidden;white-space: nowrap;">                    
-                    </div>
-                    <div style="overflow: hidden;white-space: nowrap;">
+                    </span>    
+                <?php } else {?>                    
+                    <span  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[0] ?>
-                    </div>    
+                    </span>    
                 <?php }?>
                 
             </a>
@@ -92,4 +95,13 @@ function goLinkpageid(url)
     ?>    
 </div>
 
+<script type="text/javascript">
+    $("div.summary").each(function(){
+        
+        if($(this).width() < $(this).children().children('span').first().width())
+            $(this).children().children('span').first().css('letter-spacing',-2);
+        if($(this).width() < $(this).children().children('span:eq(1)').width())
+            $(this).children().children('span:eq(1)').css('letter-spacing',-2);
+    });
 
+</script>

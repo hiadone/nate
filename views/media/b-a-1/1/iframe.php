@@ -130,7 +130,7 @@ function goLinkpageid(url)
             } else{
 
                 _span2 = i-1;
-                $(this).children().children('div:eq(1)').css('letter-spacing',_span2);
+                $(this).children().children('div:eq(1)').css('letter-spacing',-_span2);
                 break;
             }
         }

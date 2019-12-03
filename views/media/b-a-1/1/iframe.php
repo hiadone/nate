@@ -74,7 +74,7 @@ function goLinkpageid(url)
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
                 <?php if(count($cit_summary) > 1){ ?>
-                    <div  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;letter-spacing:-2px">
                     <<?php echo $cit_summary[0] ?>>
                     </div>
                     

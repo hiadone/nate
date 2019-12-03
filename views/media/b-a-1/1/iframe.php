@@ -74,17 +74,17 @@ function goLinkpageid(url)
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
                 <?php if(count($cit_summary) > 1){ ?>
-                    <span  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;">
                     <<?php echo $cit_summary[0] ?>>
-                    </span>
-                    <div></div>
-                    <span  style="overflow: hidden;white-space: nowrap;">
+                    </div>
+                    
+                    <div  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[1] ?>
-                    </span>    
+                    </div>    
                 <?php } else {?>                    
-                    <span  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[0] ?>
-                    </span>    
+                    </div>    
                 <?php }?>
                 
             </a>
@@ -96,7 +96,7 @@ function goLinkpageid(url)
     ?>    
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $("div.summary").each(function(){
         
         if($(this).width() < $(this).children().children('span').first().width())
@@ -105,4 +105,4 @@ function goLinkpageid(url)
             $(this).children().children('span:eq(1)').css('letter-spacing',-2);
     });
 
-</script>
+</script> -->

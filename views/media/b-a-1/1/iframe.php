@@ -74,14 +74,22 @@ function goLinkpageid(url)
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
                 <?php if(count($cit_summary) > 1){ ?>
-                    <div  style="overflow: hidden;white-space: nowrap;letter-spacing:-2px">
+                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <<?php echo $cit_summary[0] ?>>
+                    </span>
+                    <div  style="overflow: hidden;white-space: nowrap;">
                     <<?php echo $cit_summary[0] ?>>
                     </div>
-                    
+                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <?php echo $cit_summary[1] ?>
+                    </span>
                     <div  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[1] ?>
                     </div>    
-                <?php } else {?>                    
+                <?php } else {?>   
+                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <?php echo $cit_summary[0] ?>
+                    </span>                 
                     <div  style="overflow: hidden;white-space: nowrap;">
                     <?php echo $cit_summary[0] ?>
                     </div>    
@@ -96,13 +104,54 @@ function goLinkpageid(url)
     ?>    
 </div>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     $("div.summary").each(function(){
-        
-        if($(this).width() < $(this).children().children('span').first().width())
-            $(this).children().children('span').first().css('letter-spacing',-2);
-        if($(this).width() < $(this).children().children('span:eq(1)').width())
-            $(this).children().children('span:eq(1)').css('letter-spacing',-2);
+        var _span = 0 ;
+        var _span2 = 0 ;
+        if($(this).width() < $(this).children().children('span').first().width()){            
+            $(this).children().children('span').first().css('letter-spacing',-1);
+            _span=-1;
+            if($(this).width() < $(this).children().children('span').first().width()){            
+                $(this).children().children('span').first().css('letter-spacing',-2);
+                _span=-2;
+                if($(this).width() < $(this).children().children('span').first().width()){            
+                    $(this).children().children('span').first().css('letter-spacing',-3);
+                    _span=-3;
+                    if($(this).width() < $(this).children().children('span').first().width()){            
+                        $(this).children().children('span').first().css('letter-spacing',-4);
+                        _span=-4;
+                        if($(this).width() < $(this).children().children('span').first().width()){            
+                            $(this).children().children('span').first().css('letter-spacing',-5);
+                            _span=-5;
+                        }
+                    }
+                }
+            }
+        }
+
+        $(this).children().children('div').first().css('letter-spacing',_span);
+
+        if($(this).width() < $(this).children().children('span:eq(1)').width()){
+            $(this).children().children('div:eq(1)').css('letter-spacing',-1);
+            _span2=-1;
+            if($(this).width() < $(this).children().children('span:eq(1)').width()){
+                $(this).children().children('div:eq(1)').css('letter-spacing',-2);
+                _span2=-2;
+                if($(this).width() < $(this).children().children('span:eq(1)').width()){
+                    $(this).children().children('div:eq(1)').css('letter-spacing',-3);
+                    _span2=-3;
+                    if($(this).width() < $(this).children().children('span:eq(1)').width()){
+                        $(this).children().children('div:eq(1)').css('letter-spacing',-4);
+                        _span2=-4;
+                        if($(this).width() < $(this).children().children('span:eq(1)').width()){
+                            $(this).children().children('div:eq(1)').css('letter-spacing',-5);
+                            _span2=-5;
+                        }
+                    }
+                }
+            }
+        }
+        $(this).children().children('div:eq(1)').css('letter-spacing',_span2);
     });
 
-</script> -->
+</script>

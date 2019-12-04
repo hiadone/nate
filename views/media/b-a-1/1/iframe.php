@@ -105,10 +105,18 @@ function goLinkpageid(url)
 </div>
 
 <script type="text/javascript">
+
+
+
+function pageWidth(){
     $("div.summary").each(function(){
+        console.log(1);
         var _span = 0 ;
         var _span2 = 0 ;
+        $(this).children().children('div').first().css('letter-spacing','normal');
+        $(this).children().children('div:eq(1)').css('letter-spacing','normal');
         for (var i = 1; i < 10; i++) {
+            
             if($(this).width() < $(this).children().children('span').first().width()){                
                 
                 $(this).children().children('span').first().css('letter-spacing',-i);
@@ -124,6 +132,7 @@ function goLinkpageid(url)
         
 
         for (var i = 1; i < 10; i++) {
+            
             if($(this).width() < $(this).children().children('span:eq(1)').width()){                
                 
                 $(this).children().children('span:eq(1)').css('letter-spacing',-i);
@@ -138,5 +147,16 @@ function goLinkpageid(url)
         
         
     });
+}
 
+
+$(window).on("resize",function(){
+   
+    pageWidth();
+   
+});
+
+$(document).ready(function(){
+    pageWidth();
+});
 </script>

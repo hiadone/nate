@@ -110,10 +110,12 @@ function goLinkpageid(url)
 
 function pageWidth(){
     $("div.summary").each(function(){
-        console.log(1);
+        
         var _span = 0 ;
         var _span2 = 0 ;
+        $(this).children().children('span').first().css('letter-spacing','normal');
         $(this).children().children('div').first().css('letter-spacing','normal');
+        $(this).children().children('span:eq(1)').css('letter-spacing','normal');
         $(this).children().children('div:eq(1)').css('letter-spacing','normal');
         for (var i = 1; i < 10; i++) {
             

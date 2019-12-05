@@ -348,8 +348,10 @@ function drawChart() {
         <?php 
         if (element('list',element('link', $view))) {
             foreach (element('list',element('link', $view)) as $result) {
+            $cit_summary = array();
+            $cit_summary = explode("\n",element('cit_summary',$result));     
          ?>
-        data.addColumn('number', '<?php echo html_escape(element('cit_summary',$result))?> click');        
+        data.addColumn('number', '<?php echo empty($cit_summary[1]) ? html_escape(element('cit_summary',$result)): html_escape($cit_summary[1])?> click');        
             <?php } ?>
         <?php } else { ?>
             data.addColumn('number', '미디어 click count');

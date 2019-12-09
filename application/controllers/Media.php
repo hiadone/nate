@@ -179,7 +179,7 @@ class Media extends CB_Controller
                     'mvl_referrer' => '',
                 );
                 $this->load->model('Media_view_log_model');
-                $this->Media_view_log_model->insert($insertdata);
+                // $this->Media_view_log_model->insert($insertdata);
             
             // $this->Post_link_model->update_plus(element('pln_id', $link), 'pln_hit', 1);
         // }

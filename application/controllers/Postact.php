@@ -3883,8 +3883,9 @@ class Postact extends CB_Controller
 
         // 이벤트가 존재하면 실행합니다
         Events::trigger('after', $eventname);
-
-        redirect(prep_url(strip_tags(element('pln_url', $link)) . '?' . $param->output()));
+        // echo prep_url(strip_tags(str_replace("infl_cd%3DI0696","infl_cd%3DI4163",str_replace("하이애드원",urlencode("하이애드원"),element('pln_url', $link)))) . '?' . $param->output());
+		
+        redirect(prep_url(strip_tags(str_replace("infl_cd%3DI0696","infl_cd%3DI4163",str_replace("하이애드원",urlencode("하이애드원"),element('pln_url', $link)))) . '?' . $param->output()));
         
 
     }

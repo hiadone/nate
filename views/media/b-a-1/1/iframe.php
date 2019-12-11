@@ -74,23 +74,23 @@ function goLinkpageid(url)
         <div class="summary">
             <a href="<?php echo element('media_click',$result); ?>" target="_blank">
                 <?php if(count($cit_summary) > 1){ ?>
-                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <span  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;display:none;">
                     <?php echo html_escape("<".$cit_summary[0].">") ?>
                     </span>
-                    <div  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;">
                     <?php echo html_escape("<".$cit_summary[0].">") ?>
                     </div>
-                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <span  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;display:none;">
                     <?php echo $cit_summary[1] ?>
                     </span>
-                    <div  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;">
                     <?php echo $cit_summary[1] ?>
                     </div>    
                 <?php } else {?>   
-                    <span  style="overflow: hidden;white-space: nowrap;display:none;">
+                    <span  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;display:none;">
                     <?php echo $cit_summary[0] ?>
                     </span>                 
-                    <div  style="overflow: hidden;white-space: nowrap;">
+                    <div  style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;letter-spacing: -0.075em;">
                     <?php echo $cit_summary[0] ?>
                     </div>    
                 <?php }?>
@@ -152,13 +152,13 @@ function pageWidth(){
 }
 
 
-$(window).on("resize",function(){
+// $(window).on("resize",function(){
    
-    pageWidth();
+//     pageWidth();
    
-});
+// });
 
-$(document).ready(function(){
-    pageWidth();
-});
+// $(document).ready(function(){
+//     pageWidth();
+// });
 </script>

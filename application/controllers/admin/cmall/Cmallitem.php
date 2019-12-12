@@ -1090,7 +1090,7 @@ class Cmallitem extends CB_Controller
 		
 		$url = 'http://open.api.tingle.kr/item/list?mode=createddate&date='.$date->format('Ymd').'&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
 
-		$url = 'http://open.api.tingle.kr/item/list?mode=report&begin_day='.$begin_day->format('Ym').'01&end_day='.$end_day->format('Ymd').'&limit=10&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
+		$url = 'http://open.api.tingle.kr/item/list?mode=report&begin_day='.$begin_day->format('Ym').'01&end_day='.$end_day->format('Ymd').'&limit=50&X-OAPI-KEY=cd5a1d6d54bb0376fac5be8cf90090c5';
 
 		
 		echo $url;

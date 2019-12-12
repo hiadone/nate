@@ -19,12 +19,12 @@ $hook['post_controller_constructor'][] = array(
 	'filepath'		=> 'hooks'
 );
 
-$hook['post_controller'][] = array(
-	'class'			=> '_Stat',
-	'function'		=> 'init',
-	'filename'		=> 'Stat.php',
-	'filepath'		=> 'hooks'
-);
+// $hook['post_controller'][] = array(
+// 	'class'			=> '_Stat',
+// 	'function'		=> 'init',
+// 	'filename'		=> 'Stat.php',
+// 	'filepath'		=> 'hooks'
+// );
 
 $hook['post_system'][] = array(
 	'class'			=> '_Scheduler',
@@ -39,3 +39,4 @@ $hook['post_system'][] = array(
 	'filename'		=> 'Member_dormant.php',
 	'filepath'		=> 'hooks'
 );
+D:\dev\htdocs\shoppingtv\application\config\hooks.php

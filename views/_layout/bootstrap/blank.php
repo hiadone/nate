@@ -28,7 +28,7 @@ var cb_csrf_hash = "<?php echo $this->security->get_csrf_hash(); ?>";
 var cookie_prefix = "<?php echo config_item('cookie_prefix'); ?>";
 </script>
 <?php echo $this->managelayout->display_js(); ?>
-<script type="text/javascript" src="<?php echo base_url('assets/js/common.js'); ?>"></script>
+<!-- <script type="text/javascript" src="<?php echo base_url('assets/js/common.js'); ?>"></script> -->
 </head>
 <body <?php echo isset($view) ? element('body_script', $view) : ''; ?>>
 <?php if (isset($yield))echo $yield; ?>

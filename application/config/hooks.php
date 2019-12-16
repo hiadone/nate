@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
+
+        
 $hook['post_controller_constructor'][] = array(
 	'class'			=> '_Common',
 	'function'		=> 'init',
@@ -26,17 +28,16 @@ $hook['post_controller_constructor'][] = array(
 // 	'filepath'		=> 'hooks'
 // );
 
-$hook['post_system'][] = array(
-	'class'			=> '_Scheduler',
-	'function'		=> 'init',
-	'filename'		=> 'Scheduler.php',
-	'filepath'		=> 'hooks'
-);
+// $hook['post_system'][] = array(
+// 	'class'			=> '_Scheduler',
+// 	'function'		=> 'init',
+// 	'filename'		=> 'Scheduler.php',
+// 	'filepath'		=> 'hooks'
+// );
 
-$hook['post_system'][] = array(
-	'class'			=> '_Member_dormant',
-	'function'		=> 'init',
-	'filename'		=> 'Member_dormant.php',
-	'filepath'		=> 'hooks'
-);
-D:\dev\htdocs\shoppingtv\application\config\hooks.php
+// $hook['post_system'][] = array(
+// 	'class'			=> '_Member_dormant',
+// 	'function'		=> 'init',
+// 	'filename'		=> 'Member_dormant.php',
+// 	'filepath'		=> 'hooks'
+// );

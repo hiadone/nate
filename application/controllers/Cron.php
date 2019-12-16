@@ -59,7 +59,7 @@ class Cron extends CB_Controller {
              $this->Media_view_stat_model->replace($value);
          }
 
-        $criterion = cdate('Y-m-d 00:00:00', strtotime('-3 day'));
+        $criterion = cdate('Y-m-d 00:00:00', strtotime('-0 day'));
 
         $deletewhere = array(
                     'mvl_datetime <=' => $criterion,

@@ -599,7 +599,7 @@ class Board_write extends CB_Controller
 
 							$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 							
-							element('ObjectURL',$upload);
+							
 						} else {
 							$file_error = $this->upload->display_errors();
 							break;

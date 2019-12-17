@@ -170,8 +170,8 @@ class Media extends CB_Controller
             //     '1'
             // );
 
-                $r = mt_rand(1,10);                
-                if($r > 9){                
+                $r = mt_rand(1,100);                
+                if($r > 99){                
                     $insertdata = array(
                         'post_id' => $post_id,
                         'brd_id' => '',

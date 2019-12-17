@@ -231,45 +231,46 @@ class Managelayout extends CI_Controller
 				}
 			}
 
-			// 메뉴관리
-			$CI->load->model('Menu_model');
-			$data['menu'] = $CI->Menu_model->get_all_menu($device_view_type);
+			if ($CI->member->is_member()) {
+				// 메뉴관리
+				$CI->load->model('Menu_model');
+				$data['menu'] = $CI->Menu_model->get_all_menu($device_view_type);
 
 
-			if ($data['menu']) {
-			    $menu = $data['menu'];
-			    $page_url = element('page_url', $config) ? element('page_url', $config) : $CI->uri->uri_string();
-			    
-			    $menu_keys=array_keys(element(0, $menu));
+				if ($data['menu']) {
+				    $menu = $data['menu'];
+				    $page_url = element('page_url', $config) ? element('page_url', $config) : $CI->uri->uri_string();
+				    
+				    $menu_keys=array_keys(element(0, $menu));
 
-			    if (element(0, $menu)) {
-			        foreach (element(0, $menu) as $mkey => $mval) {
+				    if (element(0, $menu)) {
+				        foreach (element(0, $menu) as $mkey => $mval) {
 
-			            if(str_replace("/","",element('men_link', $mval)) === str_replace("/","",$page_url)){
-			                $data['menu']['active']= array(element('men_id', $mval));
-			                
-			            }
-			             
-			            if (element(element('men_id', $mval), $menu)) {
-			                foreach (element(element('men_id', $mval), $menu) as $skey => $sval) {
+				            if(str_replace("/","",element('men_link', $mval)) === str_replace("/","",$page_url)){
+				                $data['menu']['active']= array(element('men_id', $mval));
+				                
+				            }
+				             
+				            if (element(element('men_id', $mval), $menu)) {
+				                foreach (element(element('men_id', $mval), $menu) as $skey => $sval) {
 
-			                    if(str_replace("/","",element('men_link', $sval)) === str_replace("/","",$page_url)) 
-			                        $data['menu']['active']= array(element('men_id', $mval),element('men_id', $sval));
-			                }
-			                
+				                    if(str_replace("/","",element('men_link', $sval)) === str_replace("/","",$page_url)) 
+				                        $data['menu']['active']= array(element('men_id', $mval),element('men_id', $sval));
+				                }
+				                
 
-			            } else {
+				            } else {
 
-			                if(str_replace("/","",element('men_link', $mval)) === str_replace("/","",element('page_url', $config))) $data['menu']['active']= array(element('men_id', $mval));
-			                
-			            }
-			        }
-			    }
+				                if(str_replace("/","",element('men_link', $mval)) === str_replace("/","",element('page_url', $config))) $data['menu']['active']= array(element('men_id', $mval));
+				                
+				            }
+				        }
+				    }
+				}
 			}
-
 			//팝업관리
-			$CI->load->library('popuplib');
-			$data['popup'] = $CI->popuplib->display_popup();
+			// $CI->load->library('popuplib');
+			// $data['popup'] = $CI->popuplib->display_popup();
 
 		}
 

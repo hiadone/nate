@@ -136,11 +136,11 @@ class Media extends CB_Controller
     {
 
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_postact_link';
-        $this->load->event($eventname);
+        // $eventname = 'event_postact_link';
+        // $this->load->event($eventname);
 
-        // 이벤트가 존재하면 실행합니다
-        Events::trigger('before', $eventname);
+        // // 이벤트가 존재하면 실행합니다
+        // Events::trigger('before', $eventname);
 
         
         if (empty($post_id) || empty($brd_key) ) {
@@ -170,22 +170,24 @@ class Media extends CB_Controller
             //     '1'
             // );
 
-                $insertdata = array(
-                    'post_id' => $post_id,
-                    'brd_id' => '',
-                    'mvl_datetime' => cdate('Y-m-d H:i:s'),
-                    'mvl_ip' => '',
-                    'mvl_useragent' => '',
-                    'mvl_referrer' => '',
-                );
-                $this->load->model('Media_view_log_model');
-                // $this->Media_view_log_model->insert($insertdata);
-            
+                $r = mt_rand(1,10);                
+                if($r > 9){                
+                    $insertdata = array(
+                        'post_id' => $post_id,
+                        'brd_id' => '',
+                        'mvl_datetime' => cdate('Y-m-d H:i:s'),
+                        'mvl_ip' => '',
+                        'mvl_useragent' => '',
+                        'mvl_referrer' => '',
+                    );
+                    $this->load->model('Media_view_log_model');
+                    $this->Media_view_log_model->insert($insertdata);
+                }
             // $this->Post_link_model->update_plus(element('pln_id', $link), 'pln_hit', 1);
         // }
 
         // 이벤트가 존재하면 실행합니다
-        Events::trigger('after', $eventname);
+        // Events::trigger('after', $eventname);
 
 
         $layoutconfig = array(

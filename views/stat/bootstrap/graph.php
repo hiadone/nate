@@ -152,14 +152,14 @@ $color_array = array('red','orange','yellow','green','blue','purple','pink','bro
             <?php
             $progress_color=array();
             if (element('list',element('link', $view))) {
-                echo '<div class="form-group">';                
+                // echo '<div class="form-group">';                
                 foreach (element('list',element('link', $view)) as $result) {
                     $progress_color[element('pln_id',$result)] = array_pop($color_array);
 
-                    echo '<label for="allchkall" class="checkbox-inline"><span style="width:20px;height:15px;background-color:'.$progress_color[element('pln_id',$result)].';display:inline-block;"></span> '.html_escape(element('cit_summary',$result)).'</label>';
+                    // echo '<label for="allchkall" class="checkbox-inline"><span style="width:20px;height:15px;background-color:'.$progress_color[element('pln_id',$result)].';display:inline-block;"></span> '.html_escape(element('cit_summary',$result)).'</label>';
 
                 }
-                echo '</div>';
+                // echo '</div>';
             }
 
             ?>
@@ -213,7 +213,7 @@ $color_array = array('red','orange','yellow','green','blue','purple','pink','bro
 
                                 
                                 <?php 
-                                if(element('pln_cnt',$result)){
+                                if(element('pln_cnt',$result) && false){
                                     foreach(element('pln_cnt',$result) as $key_ => $value_){ 
 
                                      
@@ -260,7 +260,7 @@ $color_array = array('red','orange','yellow','green','blue','purple','pink','bro
 
                                 
                                 <?php 
-                                if(element('hit_sum_count_sub',$view)){
+                                if(element('hit_sum_count_sub',$view) && false){
                                     foreach(element('hit_sum_count_sub',$view) as $key_ => $value_){ 
 
                                 ?>

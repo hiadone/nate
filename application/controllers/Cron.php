@@ -62,13 +62,13 @@ class Cron extends CB_Controller {
         $criterion = cdate('Y-m-d 00:00:00', strtotime('-0 day'));
 
         $deletewhere = array(
-                    'mvl_datetime <=' => $criterion,
+                    'mvl_datetime <' => $criterion,
                 );
 
         $result = $this->Media_view_log_model->delete_where($deletewhere);
 
         $deletewhere = array(
-                    'mcl_datetime <=' => $criterion,
+                    'mcl_datetime <' => $criterion,
                 );
 
         $result = $this->Media_click_log_model->delete_where($deletewhere);

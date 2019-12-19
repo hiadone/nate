@@ -129,7 +129,7 @@ class Media_view_stat_model extends CB_Model
         //     SELECT A.post_id,A.brd_id,A.sc_datetime,A.sc_referrer,A.sc_cnt,B.sc_cnt from (SELECT post_id,brd_id,count(*) as sc_cnt, left(sfd_datetime, 13) as sc_datetime,sfd_referrer as sc_referrer from cb_shortcut_file_download_log group by post_id,left(sfd_datetime, 13),sfd_referrer) A RIGHT OUTER JOIN (SELECT post_id,brd_id,count(*) as sc_cnt, left(mlc_datetime, 13) as sc_datetime from cb_shortcut_view_click_log group by post_id,left(mlc_datetime, 13)) B on A.post_id=B.post_id and A.sc_datetime = B.sc_datetime  
         //     ');
 
-        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mvs_datetime,A.mvs_cnt*100,A.mvs_code from (SELECT post_id,brd_id,count(*) as mvs_cnt, left(mvl_datetime, 13) as mvs_datetime,mvl_code as mvs_code from cb_media_view_log group by post_id,left(mvl_datetime, 13),mvl_code) A ');
+        $qry = $this->db->query('SELECT A.post_id,A.brd_id,A.mvs_datetime,A.mvs_cnt,A.mvs_code from (SELECT post_id,brd_id,count(*) * 50 as mvs_cnt, left(mvl_datetime, 13) as mvs_datetime,mvl_code as mvs_code from cb_media_view_log group by post_id,left(mvl_datetime, 13),mvl_code) A ');
 
         $result = $qry->result_array();
         
@@ -137,3 +137,5 @@ class Media_view_stat_model extends CB_Model
         return $result;
     }
 }
+
+
